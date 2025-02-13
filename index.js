@@ -153,3 +153,39 @@ function addScreenShare() {
             alert("Impossible de partager l'écran.");
         });
 }
+const socket = io();
+let pendingMessages = []; // Stocke temporairement les messages en attente
+
+function sendMessage() {
+    const messageInput = document.getElementById("message");
+    const message = messageInput.value.trim();
+
+    if (message !== "") {
+        socket.emit("chat message", message);
+        displayMessage(message, "sent");
+        messageInput.value = "";
+    }
+}
+
+// Stocke les messages reçus au lieu de les afficher immédiatement
+socket.on("chat message", (msg) => {
+    pendingMessages.push(msg);
+});
+
+function receiveMessages() {
+    if (pendingMessages.length > 0) {
+        pendingMessages.forEach(msg => displayMessage(msg, "received"));
+        pendingMessages = []; // Vide la liste des messages après réception
+    } else {
+        alert("Aucun nouveau message !");
+    }
+}
+
+function displayMessage(msg, type) {
+    const chatBox = document.getElementById("chat-box");
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-message", type === "sent" ? "sent" : "received");
+    messageDiv.textContent = msg;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroller vers le bas automatiquement
+}
