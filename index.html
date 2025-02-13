@@ -9,8 +9,9 @@
 </head>
 <body>
 
+    <!-- Bannière d'annonce permanente -->
     <div id="annonce">
-        <p>Bienvenue sur le site de chat vidéo de <strong>Ndeye Rokhaya SIGNATE</strong>. Vos données personnelles sont protégées.</p>
+        <p>Bienvenue dans mon site  <strong>La famille SIGNATE  </strong>. Vos données personnelles sont protégées.</p>
     </div>
 
     <div id="register">
@@ -39,61 +40,6 @@
 
     <div id="participants"></div>
 
-    <h1>Chat WebSocket</h1>
-    <div id="chatbox" aria-live="polite"></div>
-    <input type="text" id="messageInput" placeholder="Écrire un message..." aria-label="Écrire un message">
-    <button id="sendButton" aria-label="Envoyer le message">Envoyer</button>
-
-    <script>
-        const chatbox = document.getElementById('chatbox');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        
-        // Connexion WebSocket sécurisée (environnement de production)
-        const socket = new WebSocket('wss://localhost:8080');  // Utilisez 'wss://' pour la sécurité
-
-        // Lorsque le message est reçu du serveur
-        socket.onmessage = function(event) {
-            const message = event.data;
-            const messageElement = document.createElement('p');
-            messageElement.textContent = message;
-            chatbox.appendChild(messageElement);
-            chatbox.scrollTop = chatbox.scrollHeight; // Faire défiler vers le bas
-        };
-
-        // Envoi du message
-        sendButton.onclick = function() {
-            const message = messageInput.value.trim();
-            if (message !== "") {
-                socket.send(message); // Envoie le message au serveur
-                messageInput.value = ""; // Efface le champ de saisie
-            } else {
-                alert("Veuillez saisir un message avant d'envoyer.");
-            }
-        };
-
-        // Permet d'envoyer un message avec la touche Entrée
-        messageInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-    </script>
-
-    <!-- Tawk.to Live Chat Widget -->
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-        (function(){
-            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/YOUR_WIDGET_ID/default';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin', '*');
-            s0.parentNode.insertBefore(s1, s0);
-        })();
-    </script>
-
+    <script src="index.js"></script>
 </body>
 </html>
-
-   
