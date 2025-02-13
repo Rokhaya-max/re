@@ -10,7 +10,7 @@
 <body>
 
     <div id="annonce">
-        <p>Bienvenue dans le site chat voice de <strong>Ndeye Rokhaya SIGNATE</strong>. Vos données personnelles sont protégées.</p>
+        <p>Bienvenue sur le site de chat vidéo de <strong>Ndeye Rokhaya SIGNATE</strong>. Vos données personnelles sont protégées.</p>
     </div>
 
     <div id="register">
@@ -40,17 +40,17 @@
     <div id="participants"></div>
 
     <h1>Chat WebSocket</h1>
-    <div id="chatbox"></div>
-    <input type="text" id="messageInput" placeholder="Écrire un message...">
-    <button id="sendButton">Envoyer</button>
+    <div id="chatbox" aria-live="polite"></div>
+    <input type="text" id="messageInput" placeholder="Écrire un message..." aria-label="Écrire un message">
+    <button id="sendButton" aria-label="Envoyer le message">Envoyer</button>
 
     <script>
         const chatbox = document.getElementById('chatbox');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
-
-        // Connexion WebSocket
-        const socket = new WebSocket('ws://localhost:8080');
+        
+        // Connexion WebSocket sécurisée (environnement de production)
+        const socket = new WebSocket('wss://localhost:8080');  // Utilisez 'wss://' pour la sécurité
 
         // Lorsque le message est reçu du serveur
         socket.onmessage = function(event) {
@@ -63,10 +63,12 @@
 
         // Envoi du message
         sendButton.onclick = function() {
-            const message = messageInput.value;
-            if (message.trim() !== "") {
+            const message = messageInput.value.trim();
+            if (message !== "") {
                 socket.send(message); // Envoie le message au serveur
                 messageInput.value = ""; // Efface le champ de saisie
+            } else {
+                alert("Veuillez saisir un message avant d'envoyer.");
             }
         };
 
@@ -90,7 +92,7 @@
             s0.parentNode.insertBefore(s1, s0);
         })();
     </script>
-    
+
 </body>
 </html>
 
