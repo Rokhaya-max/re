@@ -153,27 +153,29 @@ function addScreenShare() {
             alert("Impossible de partager l'écran.");
         });
 }
-// server.js
-const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 
-wss.on('connection', ws => {
-    console.log('Nouveau client connecté');
-    
-    ws.on('message', message => {
-        console.log('Message reçu: %s', message);
-        // Envoie le message à tous les clients connectés
-        wss.clients.forEach(client => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(message);
-            }
-        });
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+app.use(express.static('public'));
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
     });
-    
-    ws.on('close', () => {
-        console.log('Client déconnecté');
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg);
     });
 });
 
-console.log('Serveur WebSocket en écoute sur ws://localhost:8080');
+server.listen(3000, () => {
+    console.log('listening on *:3000');
+});
+
+
 
