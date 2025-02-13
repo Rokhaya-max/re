@@ -40,18 +40,32 @@
 
     <div id="participants"></div>
     
-        <div class="chat-container">
-            <div class="chat-box" id="chat-box"></div>
-            <div class="chat-input">
-                <input id="message" type="text" placeholder="Tapez votre message...">
-                <button onclick="sendMessage()">Envoyer</button>
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Envoyer et Recevoir Messages</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+    
+        <div class="container">
+            <h2>Envoyer / Recevoir Message</h2>
+    
+            <div class="form">
+                <label for="message">Entrez votre message :</label>
+                <input type="text" id="message" placeholder="Votre message ici">
             </div>
+    
+            <div class="buttons">
+                <button id="envoyer">Envoyer</button>
+                <button id="recevoir">Recevoir</button>
+            </div>
+    
+            <div id="response"></div>
         </div>
-        <div class="chat-input">
-            <input id="message" type="text" placeholder="Tapez votre message...">
-            <button onclick="sendMessage()">Envoyer</button>
-            <button onclick="receiveMessages()">Recevoir</button>
-        </div>        
+           
         <script src="script.js"></script>
     
     <script src="index.js"></script>
