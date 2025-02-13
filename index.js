@@ -153,20 +153,27 @@ function addScreenShare() {
             alert("Impossible de partager l'écran.");
         });
 }
-// script.js
+// server.js
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
 
-document.getElementById("envoyer").addEventListener("click", function() {
-    let message = document.getElementById("message").value;
-    if (message.trim() !== "") {
-        console.log("Message envoyé:", message);
-        document.getElementById("response").textContent = "Message envoyé: " + message;
-    } else {
-        alert("Veuillez entrer un message.");
-    }
+wss.on('connection', ws => {
+    console.log('Nouveau client connecté');
+    
+    ws.on('message', message => {
+        console.log('Message reçu: %s', message);
+        // Envoie le message à tous les clients connectés
+        wss.clients.forEach(client => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+    
+    ws.on('close', () => {
+        console.log('Client déconnecté');
+    });
 });
 
-document.getElementById("recevoir").addEventListener("click", function() {
-    let receivedMessage = "Voici un message reçu";
-    console.log("Message reçu:", receivedMessage);
-    document.getElementById("response").textContent = "Message reçu: " + receivedMessage;
-});
+console.log('Serveur WebSocket en écoute sur ws://localhost:8080');
+
