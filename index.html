@@ -1,99 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rokhaya_Signate</title>
-    <script src=https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js></script>
-    <script src="./index.js"></script>
+    <title>Chat en temps réel</title>
+    <script src="/socket.io/socket.io.js"></script>
     <style>
-        body {
-            font-family: 'Georgia', serif;
-            background-color: #f4f1f9;
-            color: #6a4f8e;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        input, button {
-            padding: 12px;
-            margin: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-        }
-        input {
-            width: 220px;
-            border: 1px solid #d4a1e5;
-            background-color: #f9ebfa;
-        }
-        button {
-            background-color: #d4a1e5;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #b88ac3;
-        }
-        #participants {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        video {
-            width: 280px;
-            margin: 15px;
-            border-radius: 15px;
-            border: 3px solid #d4a1e5;
-        }
-        div {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 25px;
-            border-radius: 12px;
-            display: inline-block;
-            margin: 25px auto;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .image-container {
-            margin-top: 25px;
-        }
-        .image-container img {
-            width: 320px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-    
+       /* Style général */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Conteneur du chat */
+.chat-container {
+    width: 400px;
+    max-width: 90%;
+    height: 500px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* Zone d'affichage des messages */
+.chat-box {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Style des messages */
+.message {
+    max-width: 80%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    word-wrap: break-word;
+}
+
+/* Messages de l'utilisateur */
+.message.user {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Messages de l'autre personne */
+.message.other {
+    background-color: #e5e5ea;
+    color: black;
+    align-self: flex-start;
+}
+
+/* Barre d'entrée de message */
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background: white;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.chat-input button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-input button:hover {
+    background: #0056b3;
+}
+
+/* Scroll personnalisé */
+.chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: #f4f4f9;
+}
+
+</style>
 </head>
 <body>
-    <div id="register">
-        <h1>Ton Nom :</h1>
-        <form onsubmit="register(); return false;">
-            <input type="text" id="name" placeholder="Entrez votre nom" required>
-            <button type="submit">Rejoindre</button>
-        </form>
-        <div class="image-container">
-            <img src="https://th.bing.com/th/id/OIP.c_OQVHqImJZvutAoj5sLEAHaEO?rs=1&pid=ImgDetMain" alt="Image">
+    <h1>Chat en temps réel</h1>
+    <input id="pseudo" placeholder="Entrez votre nom" />
+    
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <div class="chat-input">
+            <input id="input" autocomplete="off" placeholder="Tapez un message..." />
+            <button id="send">Envoyer</button>
         </div>
     </div>
 
-    <div id="userAdd" style="display: none;">
-        <h1>Se connecter à un autre utilisateur :</h1>
-        <form onsubmit="appelUser(); return false;">
-            <input type="text" id="add" placeholder="Nom de l'utilisateur" required>
-            <button type="submit">Appeler</button>
-        </form>
-    </div>
+    <script>
+        const socket = io();
+        const input = document.getElementById('input');
+        const chatBox = document.getElementById('chat-box');
+        const pseudoInput = document.getElementById('pseudo');
+        const sendButton = document.getElementById('send');
 
-    <div id="userShare" style="display: none;">
-        <h1>Partager son écran :</h1>
-        <form onsubmit="addScreenShare(); return false;">
-            <input type="text" id="share" placeholder="Nom de l'utilisateur" required>
-            <button type="submit">Partager</button>
-        </form>
-    </div>
+        function sendMessage() {
+            if (input.value.trim()) {
+                const pseudo = pseudoInput.value.trim() || 'Anonyme';
+                const message = `${pseudo}: ${input.value}`;
+                socket.emit('chat message', message);
+                input.value = '';
+                input.focus(); // Remettre le focus sur l'input après l'envoi
+            }
+        }
 
-    <div id="participants"></div>
+        sendButton.addEventListener('click', sendMessage);
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        socket.on('chat message', (msg) => {
+            const div = document.createElement('div');
+            div.textContent = msg;
+            div.classList.add('message');
+
+            if (msg.startsWith(`${pseudoInput.value.trim() || 'Anonyme'}:`)) {
+                div.classList.add('user');
+            } else {
+                div.classList.add('other');
+            }
+
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight; // Faire défiler vers le bas
+        });
+    </script>
 </body>
 </html>
