@@ -11,32 +11,77 @@ const io = new Server(server, {
     }
 });
 
-// Servir les fichiers statiques (HTML, CSS, etc.)
+// Servir les fichiers statiques (HTML, CSS, JS)
 app.use(express.static(__dirname));
 
-// Gérer les connexions des clients
+// ============================================================
+//  État global du serveur
+// ============================================================
+let pageActuelle = 'html';
+let quizReponses = {};   // { "q1": { "Vrai": 2, "Faux": 5 } }
+let nbConnectes  = 0;
+
+// ============================================================
+//  Gestion des connexions
+// ============================================================
 io.on('connection', (socket) => {
-    console.log('Un utilisateur est connecté');
+    nbConnectes++;
+    console.log(`✅ Connecté   : ${socket.id} | Total : ${nbConnectes}`);
 
-    socket.on('chat message', (data) => {
-        io.emit('chat message', data);
+    // Envoyer l'état actuel au nouvel arrivant
+    socket.emit('init', {
+        page      : pageActuelle,
+        quiz      : quizReponses,
+        connectes : nbConnectes
     });
 
+    // Informer tout le monde du nouveau compteur
+    io.emit('connectes', nbConnectes);
+
+    // ---- Navigation (le professeur change d'onglet) --------
+    socket.on('changer page', (nomPage) => {
+        pageActuelle = nomPage;
+        io.emit('changer page', nomPage);
+        console.log(`📄 Page → ${nomPage}`);
+    });
+
+    // ---- Quiz : un étudiant soumet une réponse -------------
+    socket.on('quiz reponse', (data) => {
+        const { question, reponse } = data;
+        if (!quizReponses[question])          quizReponses[question] = {};
+        if (!quizReponses[question][reponse]) quizReponses[question][reponse] = 0;
+        quizReponses[question][reponse]++;
+        io.emit('quiz stats', { question, stats: quizReponses[question] });
+        console.log(`🧠 Quiz [${question}] → "${reponse}" : ${quizReponses[question][reponse]} vote(s)`);
+    });
+
+    // ---- Reset quiz (professeur) ---------------------------
+    socket.on('reset quiz', () => {
+        quizReponses = {};
+        io.emit('quiz reset');
+        console.log('🔄 Quiz réinitialisé');
+    });
+
+    // ---- Déconnexion ---------------------------------------
     socket.on('disconnect', () => {
-        console.log('Un utilisateur est déconnecté');
+        nbConnectes--;
+        io.emit('connectes', nbConnectes);
+        console.log(`❌ Déconnecté : ${socket.id} | Total : ${nbConnectes}`);
     });
 });
-// Démarrer le serveur
+
+// ============================================================
+//  Démarrage
+// ============================================================
 server.listen(3000, '0.0.0.0', () => {
-    console.log('Serveur démarré sur http://192.168.149.130:3000');
+    console.log('🚀 Serveur démarré sur http://192.168.149.130:3000');
 });
 
-// Gérer proprement l'arrêt du serveur
+// Arrêt propre
 process.on('SIGINT', () => {
-    console.log('\nFermeture du serveur...');
+    console.log('\n🛑 Fermeture du serveur...');
     server.close(() => {
-        console.log('Serveur fermé proprement.');
+        console.log('✅ Serveur fermé proprement.');
         process.exit(0);
     });
 });
-
