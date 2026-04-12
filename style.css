@@ -1,152 +1,210 @@
-/* Global styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #4A90E2, #9B51E0);
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+  background: #111;
+  color: #ddd;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.8;
 }
 
-/* Container Styling */
-.container {
-    max-width: 800px;
-    width: 100%;
-    margin: auto;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out;
+/* ---- header ---- */
+header {
+  background: #1a1a1a;
+  border-bottom: 2px solid #333;
+  padding: 28px 20px;
+  text-align: center;
+}
+header h1 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 6px;
+}
+header p     { color: #666; font-size: 13px; }
+header .auteur { color: #4ade80; font-size: 13px; margin-top: 4px; }
+
+/* ---- navigation ---- */
+nav {
+  display: flex;
+  background: #161616;
+  border-bottom: 1px solid #222;
+  overflow-x: auto;
+}
+nav button {
+  flex: 1;
+  min-width: 120px;
+  padding: 14px 10px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  font-family: monospace;
+  font-size: 14px;
+  cursor: pointer;
+}
+nav button:hover       { color: #ddd; background: #1e1e1e; }
+nav button.actif       { color: #4ade80; border-bottom-color: #4ade80; }
+
+/* ---- pages ---- */
+.page { display: none; max-width: 700px; margin: 0 auto; padding: 36px 20px 80px; }
+.page.actif { display: block; }
+
+/* ---- titres ---- */
+h2 {
+  color: #4ade80;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #222;
+}
+h3 { color: #fff; font-size: 0.95rem; margin-bottom: 10px; margin-top: 28px; }
+p  { color: #aaa; margin-bottom: 14px; }
+
+/* ---- bloc de code ---- */
+.code {
+  background: #0d0d0d;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #4ade80;
+  border-radius: 6px;
+  padding: 16px;
+  margin: 16px 0;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #ccc;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code .tag  { color: #f97316; }
+.code .attr { color: #60a5fa; }
+.code .val  { color: #4ade80; }
+.code .com  { color: #555; font-style: italic; }
+.code .kw   { color: #c084fc; }
+.code .str  { color: #4ade80; }
+.code .fn   { color: #facc15; }
+
+/* ---- carte ---- */
+.carte {
+  background: #181818;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.carte .titre { color: #fff; font-size: 0.95rem; margin-bottom: 8px; }
+.carte p { color: #999; font-size: 0.9rem; margin: 0; }
+
+/* ---- liste ---- */
+ul { padding-left: 20px; color: #999; margin-bottom: 16px; }
+ul li { margin-bottom: 6px; font-size: 0.9rem; }
+ul li span { color: #4ade80; }
+
+/* ---- tableau ---- */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+th { background: #1e1e1e; color: #4ade80; padding: 10px 12px; text-align: left; border-bottom: 1px solid #333; }
+td { padding: 9px 12px; border-bottom: 1px solid #1e1e1e; color: #aaa; }
+td:first-child { color: #f97316; font-family: monospace; }
+tr:hover td { background: #161616; }
+
+/* ---- astuce ---- */
+.astuce {
+  background: #0d1f0d;
+  border: 1px solid #1a3a1a;
+  border-left: 3px solid #4ade80;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  font-size: 13px;
+  color: #888;
+}
+.astuce strong { color: #4ade80; display: block; margin-bottom: 4px; }
+
+/* ---- quiz ---- */
+.question {
+  background: #181818;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 22px;
+}
+.question p { color: #fff; margin-bottom: 14px; font-size: 0.95rem; }
+.options { display: flex; flex-direction: column; gap: 8px; }
+.options button {
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  color: #bbb;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 10px 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.options button:hover   { background: #242424; color: #fff; }
+.options button.bon     { border-color: #4ade80; background: #0d1f0d; color: #4ade80; }
+.options button.faux    { border-color: #ef4444; background: #1f0d0d; color: #ef4444; }
+.reponse { margin-top: 10px; font-size: 13px; font-style: italic; min-height: 18px; }
+
+/* ---- demo ---- */
+.demo {
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.demo label { color: #888; font-size: 13px; display: block; margin-bottom: 8px; }
+.demo input,
+.demo select,
+.demo textarea {
+  background: #0d0d0d;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #ddd;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 8px 12px;
+  width: 100%;
+  margin-bottom: 10px;
+  outline: none;
+}
+.demo input:focus,
+.demo textarea:focus { border-color: #4ade80; }
+.demo button {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #4ade80;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 8px 18px;
+  cursor: pointer;
+}
+.demo button:hover { background: #252525; }
+.demo .resultat {
+  margin-top: 14px;
+  padding: 12px;
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+  color: #4ade80;
+  font-size: 13px;
+  min-height: 36px;
 }
 
-/* Hover effect on the container */
-.container:hover {
-    transform: scale(1.05);
+/* ---- footer ---- */
+footer {
+  text-align: center;
+  padding: 24px;
+  color: #333;
+  font-size: 12px;
+  border-top: 1px solid #1e1e1e;
 }
-
-/* Heading Styling */
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #fff;
-}
-
-/* Input styling */
-input[type="text"] {
-    width: 80%;
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid #fff;
-    font-size: 16px;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-input[type="text"]:focus {
-    border-color: #FFD700;
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* Button Styling */
-.button {
-    background: #FFD700;
-    color: black;
-    padding: 12px 24px;
-    border-radius: 30px;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    letter-spacing: 1px;
-}
-
-.button:hover {
-    background: #FFC107;
-    transform: scale(1.05);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-}
-
-.button:active {
-    transform: scale(0.98);
-}
-
-/* Form and other sections */
-form {
-    margin-bottom: 30px;
-}
-
-input[type="submit"] {
-    background: #9B51E0;
-    color: white;
-    border-radius: 50px;
-    padding: 15px 30px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-    width: 100%;
-}
-
-input[type="submit"]:hover {
-    background: #7E38B8;
-}
-
-/* Section for the announcement */
-#annonce {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-}
-
-/* Chatbox and chat area */
-#chatbox {
-    width: 100%;
-    max-height: 300px;
-    overflow-y: auto;
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-#messageInput {
-    width: 80%;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 25px;
-    border: none;
-    outline: none;
-    font-size: 16px;
-}
-
-#sendButton {
-    padding: 10px 20px;
-    margin-left: 10px;
-    background: #FFD700;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#sendButton:hover {
-    background: #FFC107;
-}
-
 
  
 
