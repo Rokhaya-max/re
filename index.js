@@ -1,78 +1,53 @@
 // ============================================================
-//  CONNEXION SOCKET.IO
+//  NAVIGATION — fonctionne AVEC ou SANS Socket.io
 // ============================================================
-const socket = io();
 
-// ============================================================
-//  ÉTAT LOCAL
-// ============================================================
-let modeProf = false;   // true = ce client est le professeur
+let modeProf = false;
+let socket = null;
 
-// ============================================================
-//  INITIALISATION À LA CONNEXION
-//  Le serveur envoie l'état courant (page active, stats quiz,
-//  nombre de connectés) dès qu'un client se connecte.
-// ============================================================
-socket.on('init', (data) => {
-    // Synchroniser la page affichée
-    allerPage(data.page);
-
-    // Restaurer les stats de quiz déjà enregistrées
-    Object.entries(data.quiz).forEach(([question, stats]) => {
-        afficherStats(question, stats);
+// ---- Navigation locale (appelée par les boutons nav) -------
+function afficher(nom, btn) {
+    // 1. Masquer toutes les pages
+    document.querySelectorAll('.page').forEach(function(p) {
+        p.classList.remove('actif');
     });
 
-    // Afficher le nombre de connectés
-    document.getElementById('nb-connectes').textContent = data.connectes;
-});
+    // 2. Désactiver tous les boutons nav
+    document.querySelectorAll('nav button').forEach(function(b) {
+        b.classList.remove('actif');
+    });
 
-// ============================================================
-//  NOMBRE DE CONNECTÉS (mis à jour en temps réel)
-// ============================================================
-socket.on('connectes', (nb) => {
-    document.getElementById('nb-connectes').textContent = nb;
-});
+    // 3. Afficher la page demandée
+    var page = document.getElementById('page-' + nom);
+    if (page) page.classList.add('actif');
 
-// ============================================================
-//  NAVIGATION SYNCHRONISÉE
-// ============================================================
+    // 4. Activer le bouton cliqué
+    if (btn) btn.classList.add('actif');
 
-/**
- * Reçu du serveur → changer la page localement sans réémettre.
- */
-socket.on('changer page', (nomPage) => {
-    allerPage(nomPage);
-});
+    window.scrollTo(0, 0);
 
-/**
- * Appelé par les boutons de navigation : onclick="afficher('html', this)"
- * Si mode professeur → diffuse le changement à tous les clients.
- */
-function afficher(nom, btn) {
-    allerPage(nom);
-    if (modeProf) {
+    // 5. Si socket connecté et mode prof → diffuser
+    if (socket && modeProf) {
         socket.emit('changer page', nom);
     }
 }
 
-/**
- * Navigation locale pure (sans émettre d'événement socket).
- */
+// ---- Navigation déclenchée par le serveur ------------------
 function allerPage(nom) {
-    // Cacher toutes les pages
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('actif'));
+    document.querySelectorAll('.page').forEach(function(p) {
+        p.classList.remove('actif');
+    });
+    document.querySelectorAll('nav button').forEach(function(b) {
+        b.classList.remove('actif');
+    });
 
-    // Désactiver tous les boutons nav
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('actif'));
-
-    // Afficher la bonne page
-    const page = document.getElementById('page-' + nom);
+    var page = document.getElementById('page-' + nom);
     if (page) page.classList.add('actif');
 
-    // Activer le bon bouton nav (en cherchant le nom dans l'attribut onclick)
-    document.querySelectorAll('nav button').forEach(b => {
-        const onclick = b.getAttribute('onclick') || '';
-        if (onclick.includes("'" + nom + "'")) {
+    // Trouver et activer le bon bouton nav
+    document.querySelectorAll('nav button').forEach(function(b) {
+        var oc = b.getAttribute('onclick') || '';
+        if (oc.indexOf("'" + nom + "'") !== -1) {
             b.classList.add('actif');
         }
     });
@@ -81,139 +56,87 @@ function allerPage(nom) {
 }
 
 // ============================================================
-//  MODE PROFESSEUR
+//  QUIZ — répondre à une question
 // ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-    const checkbox = document.getElementById('mode-prof');
-    if (checkbox) {
-        checkbox.addEventListener('change', () => {
-            modeProf = checkbox.checked;
-            console.log('🎓 Mode professeur :', modeProf);
-        });
-    }
-});
-
-// ============================================================
-//  QUIZ — ENVOYER UNE RÉPONSE
-// ============================================================
-
-/**
- * Appelé par les boutons de quiz :
- * onclick="repondre(this, false, 'feedback...', 'q1')"
- *
- * @param {HTMLElement} btn       - Le bouton cliqué
- * @param {boolean}     correct   - La réponse est-elle correcte ?
- * @param {string}      feedback  - Texte explicatif à afficher
- * @param {string}      questionId - Identifiant de la question (ex: 'q1')
- */
 function repondre(btn, correct, feedback, questionId) {
-    const question = btn.closest('.question');
+    var question = btn.closest('.question');
 
-    // Bloquer tous les boutons de cette question
-    question.querySelectorAll('button').forEach(b => {
+    // Bloquer tous les boutons de la question
+    question.querySelectorAll('button').forEach(function(b) {
         b.disabled = true;
         b.style.cursor = 'default';
     });
 
-    // Affichage local : colorer le bouton choisi
+    // Colorier le bouton choisi
     btn.classList.add(correct ? 'bon' : 'faux');
 
     // Afficher le feedback
-    const rep = question.querySelector('.reponse');
+    var rep = question.querySelector('.reponse');
     rep.textContent = feedback;
     rep.style.color = correct ? '#4ade80' : '#ef4444';
 
-    // Envoyer la réponse au serveur pour mise à jour des stats
-    socket.emit('quiz reponse', {
-        question : questionId,
-        reponse  : btn.textContent.trim()
-    });
+    // Envoyer au serveur si socket connecté
+    if (socket && questionId) {
+        socket.emit('quiz reponse', {
+            question: questionId,
+            reponse: btn.textContent.trim()
+        });
+    }
 }
 
 // ============================================================
-//  QUIZ — RECEVOIR LES STATS EN TEMPS RÉEL
+//  QUIZ — afficher les stats reçues du serveur
 // ============================================================
-
-/**
- * Le serveur diffuse les nouvelles stats après chaque vote.
- */
-socket.on('quiz stats', (data) => {
-    afficherStats(data.question, data.stats);
-});
-
-/**
- * Affiche ou met à jour les barres de progression sous une question.
- *
- * @param {string} questionId - ex: 'q1'
- * @param {Object} stats      - ex: { "Vrai": 3, "Faux": 7 }
- */
 function afficherStats(questionId, stats) {
-    const question = document.getElementById(questionId);
+    var question = document.getElementById(questionId);
     if (!question) return;
 
-    // Créer le bloc stats si absent
-    let bloc = question.querySelector('.quiz-stats');
+    var bloc = question.querySelector('.quiz-stats');
     if (!bloc) {
         bloc = document.createElement('div');
         bloc.className = 'quiz-stats';
         question.appendChild(bloc);
     }
 
-    // Calcul du total des votes
-    const total = Object.values(stats).reduce((a, b) => a + b, 0);
+    var total = Object.values(stats).reduce(function(a, b) { return a + b; }, 0);
 
-    // Reconstruire les barres
-    bloc.innerHTML = Object.entries(stats).map(([label, count]) => {
-        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-        return `
-        <div class="barre">
-          <span class="label">${label}</span>
-          <div class="fond">
-            <div class="remplissage" style="width:${pct}%"></div>
-          </div>
-          <span class="count">${count}</span>
-        </div>`;
+    bloc.innerHTML = Object.entries(stats).map(function(entry) {
+        var label = entry[0], count = entry[1];
+        var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return '<div class="barre">' +
+            '<span class="label">' + label + '</span>' +
+            '<div class="fond"><div class="remplissage" style="width:' + pct + '%"></div></div>' +
+            '<span class="count">' + count + '</span>' +
+            '</div>';
     }).join('');
 }
 
 // ============================================================
-//  QUIZ — RESET (PROFESSEUR UNIQUEMENT)
+//  QUIZ — reset
 // ============================================================
-
-/**
- * Appelé par le bouton "🔄 Reset Quiz" de la barre temps réel.
- */
 function resetQuiz() {
     if (!modeProf) {
-        alert('⚠️ Activez le mode Professeur pour réinitialiser le quiz.');
+        alert('Activez le mode Professeur pour réinitialiser le quiz.');
         return;
     }
-    socket.emit('reset quiz');
+    if (socket) socket.emit('reset quiz');
 }
 
-/**
- * Reçu du serveur → remettre toutes les questions à zéro.
- */
-socket.on('quiz reset', () => {
-    // Supprimer les barres de stats
-    document.querySelectorAll('.quiz-stats').forEach(b => b.remove());
-
-    // Réactiver tous les boutons
-    document.querySelectorAll('.question button').forEach(b => {
+function appliquerResetQuiz() {
+    document.querySelectorAll('.quiz-stats').forEach(function(b) { b.remove(); });
+    document.querySelectorAll('.question button').forEach(function(b) {
         b.disabled = false;
         b.style.cursor = 'pointer';
         b.classList.remove('bon', 'faux');
     });
-
-    // Effacer les feedbacks
-    document.querySelectorAll('.reponse').forEach(r => {
+    document.querySelectorAll('.reponse').forEach(function(r) {
         r.textContent = '';
         r.style.color = '';
     });
-});
+}
 
 // ============================================================
-//  DÉMO CSS — appliquer couleur et taille en direct
+//  DÉMO CSS
 // ============================================================
 function appliquerCSS() {
     var couleur = document.getElementById('css-couleur').value;
@@ -224,19 +147,77 @@ function appliquerCSS() {
 }
 
 // ============================================================
-//  DÉMO JS — calculer le double d'un nombre
+//  DÉMO JS — double
 // ============================================================
 function calculerDouble() {
     var nombre   = document.getElementById('js-nombre').value;
     var resultat = document.getElementById('js-resultat');
-
     if (nombre === '') {
         resultat.textContent = "Entrez un nombre d'abord.";
         resultat.style.color = '#ef4444';
         return;
     }
-
-    var double = Number(nombre) * 2;
-    resultat.textContent = 'Le double de ' + nombre + ' est : ' + double;
+    resultat.textContent = 'Le double de ' + nombre + ' est : ' + (Number(nombre) * 2);
     resultat.style.color = '#4ade80';
 }
+
+// ============================================================
+//  SOCKET.IO — chargement optionnel
+//  Si io() est disponible (serveur Node lancé), on connecte.
+//  Sinon, toutes les fonctions marchent quand même en local.
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Mode professeur checkbox
+    var checkbox = document.getElementById('mode-prof');
+    if (checkbox) {
+        checkbox.addEventListener('change', function() {
+            modeProf = checkbox.checked;
+        });
+    }
+
+    // Tenter la connexion Socket.io
+    if (typeof io !== 'undefined') {
+        try {
+            socket = io();
+
+            // État initial envoyé par le serveur
+            socket.on('init', function(data) {
+                allerPage(data.page);
+                Object.entries(data.quiz).forEach(function(entry) {
+                    afficherStats(entry[0], entry[1]);
+                });
+                var el = document.getElementById('nb-connectes');
+                if (el) el.textContent = data.connectes;
+            });
+
+            // Mise à jour du compteur
+            socket.on('connectes', function(nb) {
+                var el = document.getElementById('nb-connectes');
+                if (el) el.textContent = nb;
+            });
+
+            // Page changée par le prof
+            socket.on('changer page', function(nomPage) {
+                allerPage(nomPage);
+            });
+
+            // Stats quiz temps réel
+            socket.on('quiz stats', function(data) {
+                afficherStats(data.question, data.stats);
+            });
+
+            // Reset quiz
+            socket.on('quiz reset', function() {
+                appliquerResetQuiz();
+            });
+
+        } catch(e) {
+            console.warn('Socket.io non disponible, mode hors-ligne.');
+        }
+    } else {
+        // Cacher la barre temps réel si pas de serveur
+        var barre = document.getElementById('barre-connectes');
+        if (barre) barre.style.display = 'none';
+    }
+});
