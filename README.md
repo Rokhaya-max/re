@@ -1,864 +1,649 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cours Programmation Web - ESP</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cours Programmation Web - ESP Dakar</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       background: #111;
       color: #ddd;
       font-family: monospace;
-      font-size: 15px;
-      line-height: 1.8;
-    }
-
-    /* ---- header ---- */
-    header {
-      background: #1a1a1a;
-      border-bottom: 2px solid #333;
-      padding: 28px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      color: #fff;
-      font-size: 1.5rem;
-      font-weight: normal;
-      margin-bottom: 6px;
-    }
-
-    header p {
-      color: #666;
-      font-size: 13px;
-    }
-
-    header .auteur {
-      color: #4ade80;
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    /* ---- navigation ---- */
-    nav {
-      display: flex;
-      background: #161616;
-      border-bottom: 1px solid #222;
-      overflow-x: auto;
-    }
-
-    nav button {
-      flex: 1;
-      min-width: 120px;
-      padding: 14px 10px;
-      background: none;
-      border: none;
-      border-bottom: 3px solid transparent;
-      color: #666;
-      font-family: monospace;
       font-size: 14px;
-      cursor: pointer;
+      margin: 0;
+      padding: 0;
     }
 
-    nav button:hover {
-      color: #ddd;
-      background: #1e1e1e;
-    }
-
-    nav button.actif {
-      color: #4ade80;
-      border-bottom-color: #4ade80;
-    }
-
-    /* ---- pages ---- */
-    .page {
-      display: none;
+    .wrap {
       max-width: 700px;
       margin: 0 auto;
-      padding: 36px 20px 80px;
+      padding: 20px;
     }
 
-    .page.actif {
-      display: block;
-    }
-
-    /* ---- titre de section ---- */
-    h2 {
-      color: #4ade80;
-      font-size: 1rem;
+    /* HEADER */
+    .header {
+      text-align: center;
+      padding: 20px 0;
+      border-bottom: 1px solid #333;
       margin-bottom: 20px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #222;
     }
+    .header h1 { color: #fff; font-size: 18px; }
+    .header p  { color: #666; font-size: 12px; }
+    .header .auteur { color: #4ade80; }
 
-    h3 {
-      color: #fff;
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-      margin-top: 28px;
+    /* NAVIGATION */
+    nav {
+      display: flex;
+      border-bottom: 1px solid #333;
+      margin-bottom: 20px;
     }
-
-    p {
-      color: #aaa;
-      margin-bottom: 14px;
+    nav button {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #666;
+      font-family: monospace;
+      font-size: 13px;
+      cursor: pointer;
     }
+    nav button:hover { color: #fff; background: #1a1a1a; }
+    nav button.actif { color: #4ade80; border-bottom: 2px solid #4ade80; }
 
-    /* ---- bloc de code ---- */
+    /* PAGES */
+    .page { display: none; }
+    .page.actif { display: block; }
+
+    /* TITRES */
+    h2 { color: #4ade80; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 16px; }
+    h3 { color: #fff; font-size: 14px; margin-top: 20px; margin-bottom: 8px; }
+
+    /* TEXTE */
+    p { color: #aaa; font-size: 13px; margin-bottom: 10px; }
+
+    /* CARTE INFO */
+    .carte {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .carte .titre { color: #fff; margin-bottom: 6px; }
+    .carte p { margin: 0; }
+
+    /* ASTUCE */
+    .astuce {
+      background: #0d1a0d;
+      border-left: 3px solid #4ade80;
+      padding: 10px 14px;
+      margin: 12px 0;
+      color: #888;
+      font-size: 13px;
+    }
+    .astuce b { color: #4ade80; display: block; margin-bottom: 4px; }
+
+    /* BLOC CODE */
     .code {
-      background: #0d0d0d;
+      background: #0a0a0a;
       border: 1px solid #2a2a2a;
       border-left: 3px solid #4ade80;
-      border-radius: 6px;
-      padding: 16px;
-      margin: 16px 0;
-      font-family: monospace;
+      padding: 12px 14px;
+      margin: 12px 0;
       font-size: 13px;
       line-height: 1.9;
       color: #ccc;
       overflow-x: auto;
       white-space: pre;
     }
+    .code .tag  { color: #f97316; }
+    .code .attr { color: #60a5fa; }
+    .code .com  { color: #555; font-style: italic; }
+    .code .kw   { color: #c084fc; }
+    .code .str  { color: #4ade80; }
+    .code .fn   { color: #facc15; }
 
-    .code .tag   { color: #f97316; }
-    .code .attr  { color: #60a5fa; }
-    .code .val   { color: #4ade80; }
-    .code .com   { color: #555; font-style: italic; }
-    .code .kw    { color: #c084fc; }
-    .code .str   { color: #4ade80; }
-    .code .fn    { color: #facc15; }
+    /* TABLEAU */
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    th { background: #1a1a1a; color: #4ade80; padding: 8px 10px; text-align: left; border-bottom: 1px solid #333; }
+    td { padding: 7px 10px; border-bottom: 1px solid #1a1a1a; color: #aaa; }
+    td:first-child { color: #f97316; }
 
-    /* ---- carte info ---- */
-    .carte {
-      background: #181818;
-      border: 1px solid #222;
-      border-radius: 8px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-    }
-
-    .carte .titre {
-      color: #fff;
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
-
-    .carte p {
-      color: #999;
-      font-size: 0.9rem;
-      margin: 0;
-    }
-
-    /* ---- liste simple ---- */
-    ul {
-      padding-left: 20px;
-      color: #999;
-      margin-bottom: 16px;
-    }
-
-    ul li {
-      margin-bottom: 6px;
-      font-size: 0.9rem;
-    }
-
-    ul li span {
-      color: #4ade80;
-    }
-
-    /* ---- tableau ---- */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0;
-      font-size: 13px;
-    }
-
-    th {
-      background: #1e1e1e;
-      color: #4ade80;
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 1px solid #333;
-    }
-
-    td {
-      padding: 9px 12px;
-      border-bottom: 1px solid #1e1e1e;
-      color: #aaa;
-    }
-
-    td:first-child {
-      color: #f97316;
-      font-family: monospace;
-    }
-
-    tr:hover td {
-      background: #161616;
-    }
-
-    /* ---- astuce ---- */
-    .astuce {
-      background: #0d1f0d;
-      border: 1px solid #1a3a1a;
-      border-left: 3px solid #4ade80;
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin: 16px 0;
-      font-size: 13px;
-      color: #888;
-    }
-
-    .astuce strong {
-      color: #4ade80;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    /* ---- quiz ---- */
-    .question {
-      background: #181818;
-      border: 1px solid #222;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 22px;
-    }
-
-    .question p {
-      color: #fff;
-      margin-bottom: 14px;
-      font-size: 0.95rem;
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .options button {
-      background: #1e1e1e;
-      border: 1px solid #2a2a2a;
-      border-radius: 6px;
-      color: #bbb;
-      font-family: monospace;
-      font-size: 13px;
-      padding: 10px 14px;
-      text-align: left;
-      cursor: pointer;
-    }
-
-    .options button:hover {
-      background: #242424;
-      color: #fff;
-    }
-
-    .options button.bon {
-      border-color: #4ade80;
-      background: #0d1f0d;
-      color: #4ade80;
-    }
-
-    .options button.faux {
-      border-color: #ef4444;
-      background: #1f0d0d;
-      color: #ef4444;
-    }
-
-    .reponse {
-      margin-top: 10px;
-      font-size: 13px;
-      font-style: italic;
-      min-height: 18px;
-    }
-
-    /* ---- demo interactive ---- */
+    /* DEMO */
     .demo {
       background: #161616;
       border: 1px solid #2a2a2a;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 16px 0;
+      border-radius: 6px;
+      padding: 16px;
+      margin: 12px 0;
     }
-
-    .demo label {
-      color: #888;
-      font-size: 13px;
-      display: block;
-      margin-bottom: 8px;
-    }
-
-    .demo input,
+    .demo label { color: #888; font-size: 12px; display: block; margin-bottom: 6px; }
     .demo select,
-    .demo textarea {
-      background: #0d0d0d;
+    .demo input {
+      width: 100%;
+      background: #0a0a0a;
       border: 1px solid #333;
       border-radius: 4px;
       color: #ddd;
       font-family: monospace;
       font-size: 13px;
-      padding: 8px 12px;
-      width: 100%;
+      padding: 7px 10px;
       margin-bottom: 10px;
-      outline: none;
     }
-
-    .demo input:focus,
-    .demo textarea:focus {
-      border-color: #4ade80;
-    }
-
     .demo button {
-      background: #1e1e1e;
+      background: #1a1a1a;
       border: 1px solid #333;
       border-radius: 4px;
       color: #4ade80;
       font-family: monospace;
       font-size: 13px;
-      padding: 8px 18px;
+      padding: 8px 16px;
       cursor: pointer;
     }
-
-    .demo button:hover {
-      background: #252525;
-    }
-
-    .demo .resultat {
-      margin-top: 14px;
-      padding: 12px;
-      background: #0d0d0d;
-      border: 1px solid #1e1e1e;
+    .demo button:hover { background: #222; }
+    .resultat {
+      margin-top: 12px;
+      padding: 10px;
+      background: #0a0a0a;
+      border: 1px solid #222;
       border-radius: 4px;
       color: #4ade80;
       font-size: 13px;
-      min-height: 36px;
+      min-height: 32px;
     }
 
-    /* ---- footer ---- */
+    /* QUIZ */
+    .question {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .question p { color: #fff; margin-bottom: 10px; }
+    .options { display: flex; flex-direction: column; gap: 6px; }
+    .options button {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #bbb;
+      font-family: monospace;
+      font-size: 13px;
+      padding: 9px 12px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .options button:hover { background: #1e1e1e; color: #fff; }
+    .options button.bon  { border-color: #4ade80; background: #0d1a0d; color: #4ade80; }
+    .options button.faux { border-color: #ef4444; background: #1a0d0d; color: #ef4444; }
+    .feedback { margin-top: 8px; font-size: 12px; font-style: italic; min-height: 16px; }
+
+    /* SCORE */
+    .score {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      color: #aaa;
+      font-size: 13px;
+    }
+    .score span { color: #4ade80; font-size: 16px; }
+
+    /* FOOTER */
     footer {
       text-align: center;
-      padding: 24px;
+      padding: 20px;
       color: #333;
       font-size: 12px;
-      border-top: 1px solid #1e1e1e;
+      border-top: 1px solid #1a1a1a;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>Programmation Web — ESP Dakar</h1>
-  <p>Université Cheikh Anta Diop · Département Génie Informatique · Niveau Licence</p>
-  <p class="auteur">Dr. Mouhamed DIOP — mouhamed.diop@esp.sn</p>
-</header>
+<div class="wrap">
 
-<nav>
-  <button class="actif" onclick="afficher('html', this)">📄 HTML</button>
-  <button onclick="afficher('css', this)">🎨 CSS</button>
-  <button onclick="afficher('js', this)">⚙️ JavaScript</button>
-  <button onclick="afficher('quiz', this)">🧠 Quiz</button>
-</nav>
-
-<!-- ========== PAGE HTML ========== -->
-<div class="page actif" id="page-html">
-
-  <h2>Survol du langage HTML</h2>
-
-  <div class="carte">
-    <div class="titre">C'est quoi le HTML ?</div>
-    <p>HyperText Markup Language — c'est un <strong>langage de description</strong>, pas de programmation. Il permet de créer des pages web lisibles dans un navigateur.</p>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Programmation Web — ESP Dakar</h1>
+    <p>Université Cheikh Anta Diop · Département Génie Informatique · Licence</p>
+    <p class="auteur">Dr. Mouhamed DIOP — mouhamed.diop@esp.sn</p>
   </div>
 
-  <div class="astuce">
-    <strong>HTML vs CSS</strong>
-    HTML décrit la <em>structure</em> du document. CSS se charge de la <em>présentation</em>. Le W3C recommande de toujours séparer les deux.
-  </div>
+  <!-- NAVIGATION -->
+  <nav>
+    <button id="btn-html" class="actif">📄 HTML</button>
+    <button id="btn-css">🎨 CSS</button>
+    <button id="btn-js">⚙️ JavaScript</button>
+    <button id="btn-quiz">🧠 Quiz</button>
+  </nav>
 
-  <!-- balises -->
-  <h3>Les balises</h3>
-  <p>Une balise est délimitée par &lt; et &gt;. Elle a une ouvrante et une fermante. Les balises orphelines se ferment elles-mêmes.</p>
+  <!-- PAGE HTML -->
+  <div class="page actif" id="page-html">
+    <h2>Survol du langage HTML</h2>
 
-  <div class="code"><span class="tag">&lt;p&gt;</span> Mon chat est fâché <span class="tag">&lt;/p&gt;</span>   <span class="com">-- balise normale</span>
+    <div class="carte">
+      <div class="titre">C'est quoi le HTML ?</div>
+      <p>HyperText Markup Language — un langage de <strong>description</strong>, pas de programmation. Il crée des pages web lisibles dans un navigateur.</p>
+    </div>
 
-<span class="tag">&lt;br</span> <span class="attr">/</span><span class="tag">&gt;</span>                      <span class="com">-- balise orpheline (pas de contenu)</span></div>
+    <div class="astuce"><b>HTML vs CSS</b>HTML décrit la structure. CSS gère la présentation. Le W3C recommande de toujours séparer les deux.</div>
 
-  <!-- structure -->
-  <h3>Structure de base d'un document XHTML</h3>
-  <p>Tout document HTML/XHTML suit cette structure :</p>
+    <h3>Les balises</h3>
+    <p>Une balise est délimitée par &lt; et &gt;. Elle a une ouvrante et une fermante.</p>
+    <div class="code"><span class="tag">&lt;p&gt;</span> Mon chat est fâché <span class="tag">&lt;/p&gt;</span>   <span class="com">-- balise normale</span>
+<span class="tag">&lt;br</span> <span class="attr">/</span><span class="tag">&gt;</span>                      <span class="com">-- balise orpheline (pas de fermeture)</span></div>
 
-  <div class="code"><span class="tag">&lt;!DOCTYPE</span> html PUBLIC <span class="str">"-//W3C//DTD XHTML 1.0 Transitional//EN"</span><span class="tag">&gt;</span>
-
+    <h3>Structure de base</h3>
+    <div class="code"><span class="tag">&lt;!DOCTYPE</span> html<span class="tag">&gt;</span>
 <span class="tag">&lt;html&gt;</span>
-
   <span class="tag">&lt;head&gt;</span>
     <span class="tag">&lt;title&gt;</span>Titre de la page<span class="tag">&lt;/title&gt;</span>
   <span class="tag">&lt;/head&gt;</span>
-
   <span class="tag">&lt;body&gt;</span>
     Ce qui s'affiche dans le navigateur
   <span class="tag">&lt;/body&gt;</span>
-
 <span class="tag">&lt;/html&gt;</span></div>
 
-  <!-- titres -->
-  <h3>Les titres (h1 à h6)</h3>
-  <p>Il existe 6 niveaux de titres, du plus important au moins important :</p>
+    <h3>Les titres h1 à h6</h3>
+    <table>
+      <tr><th>Balise</th><th>Usage</th></tr>
+      <tr><td>&lt;h1&gt;</td><td>Titre principal de la page</td></tr>
+      <tr><td>&lt;h2&gt;</td><td>Titre d'un paragraphe</td></tr>
+      <tr><td>&lt;h3&gt;</td><td>Sous-titre d'un paragraphe</td></tr>
+      <tr><td>&lt;h4&gt; à &lt;h6&gt;</td><td>Peu utilisés</td></tr>
+    </table>
 
-  <table>
-    <tr><th>Balise</th><th>Usage</th></tr>
-    <tr><td>&lt;h1&gt;</td><td>Titre principal de la page</td></tr>
-    <tr><td>&lt;h2&gt;</td><td>Titre d'un paragraphe</td></tr>
-    <tr><td>&lt;h3&gt;</td><td>Sous-titre d'un paragraphe</td></tr>
-    <tr><td>&lt;h4&gt; à &lt;h6&gt;</td><td>Peu utilisés</td></tr>
-  </table>
+    <h3>Mise en forme du texte</h3>
+    <table>
+      <tr><th>Balise</th><th>Effet</th></tr>
+      <tr><td>&lt;b&gt;</td><td>Gras</td></tr>
+      <tr><td>&lt;i&gt;</td><td>Italique</td></tr>
+      <tr><td>&lt;u&gt;</td><td>Souligné</td></tr>
+      <tr><td>&lt;sup&gt;</td><td>Exposant</td></tr>
+      <tr><td>&lt;sub&gt;</td><td>Indice</td></tr>
+    </table>
 
-  <!-- paragraphes -->
-  <h3>Les paragraphes</h3>
-  <div class="code"><span class="tag">&lt;p&gt;</span>Premiere ligne
-Toujours la premiere ligne <span class="tag">&lt;br</span> <span class="attr">/</span><span class="tag">&gt;</span>
-Une autre ligne
-<span class="tag">&lt;/p&gt;</span></div>
-
-  <!-- mise en forme -->
-  <h3>Mise en forme du texte</h3>
-  <table>
-    <tr><th>Balise</th><th>Effet</th></tr>
-    <tr><td>&lt;b&gt;</td><td>Gras</td></tr>
-    <tr><td>&lt;i&gt;</td><td>Italique</td></tr>
-    <tr><td>&lt;u&gt;</td><td>Souligné</td></tr>
-    <tr><td>&lt;sup&gt;</td><td>Exposant</td></tr>
-    <tr><td>&lt;sub&gt;</td><td>Indice</td></tr>
-  </table>
-
-  <!-- liens -->
-  <h3>Les liens</h3>
-  <p>Un lien hypertexte envoie le visiteur vers une autre page ou une autre zone de la page.</p>
-
-  <div class="code"><span class="com">-- lien vers une autre page --</span>
+    <h3>Les liens</h3>
+    <div class="code"><span class="com">-- lien vers une autre page --</span>
 <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"destination.html"</span><span class="tag">&gt;</span>Texte du lien<span class="tag">&lt;/a&gt;</span>
 
 <span class="com">-- lien externe --</span>
 <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"http://www.google.sn"</span> <span class="attr">target=</span><span class="str">"_blank"</span><span class="tag">&gt;</span>Google<span class="tag">&lt;/a&gt;</span>
 
 <span class="com">-- lien email --</span>
-<span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"mailto:webmaster@monsite.sn"</span><span class="tag">&gt;</span>Ecrivez-moi<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"mailto:contact@esp.sn"</span><span class="tag">&gt;</span>Ecrivez-moi<span class="tag">&lt;/a&gt;</span></div>
 
-<span class="com">-- ancre (navigation dans la page) --</span>
-<span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#motClef"</span><span class="tag">&gt;</span>Aller au chapitre<span class="tag">&lt;/a&gt;</span>
-<span class="tag">&lt;h2</span> <span class="attr">id=</span><span class="str">"motClef"</span><span class="tag">&gt;</span>Chapitre<span class="tag">&lt;/h2&gt;</span></div>
-
-  <!-- listes -->
-  <h3>Les listes</h3>
-  <div class="code"><span class="com">-- liste non ordonnée --</span>
+    <h3>Les listes</h3>
+    <div class="code"><span class="com">-- liste non ordonnée --</span>
 <span class="tag">&lt;ul&gt;</span>
-  <span class="tag">&lt;li&gt;</span>One item<span class="tag">&lt;/li&gt;</span>
-  <span class="tag">&lt;li&gt;</span>Another item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Premier élément<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Deuxième élément<span class="tag">&lt;/li&gt;</span>
 <span class="tag">&lt;/ul&gt;</span>
 
 <span class="com">-- liste ordonnée --</span>
 <span class="tag">&lt;ol&gt;</span>
-  <span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
-  <span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Premier item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Deuxième item<span class="tag">&lt;/li&gt;</span>
 <span class="tag">&lt;/ol&gt;</span></div>
 
-  <!-- images -->
-  <h3>Les images</h3>
-  <div class="code"><span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"chemin/image.jpg"</span>
-     <span class="attr">alt=</span><span class="str">"description si image non chargée"</span>
-     <span class="attr">width=</span><span class="str">"200"</span>
-     <span class="attr">height=</span><span class="str">"150"</span> <span class="tag">/&gt;</span></div>
+    <h3>Les images</h3>
+    <div class="code"><span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"image.jpg"</span> <span class="attr">alt=</span><span class="str">"description"</span> <span class="attr">width=</span><span class="str">"200"</span> <span class="attr">height=</span><span class="str">"150"</span> <span class="tag">/&gt;</span></div>
 
-  <!-- tableaux -->
-  <h3>Les tableaux</h3>
-  <div class="code"><span class="tag">&lt;table</span> <span class="attr">border=</span><span class="str">"1"</span><span class="tag">&gt;</span>
+    <h3>Les tableaux</h3>
+    <div class="code"><span class="tag">&lt;table</span> <span class="attr">border=</span><span class="str">"1"</span><span class="tag">&gt;</span>
   <span class="tag">&lt;tr&gt;</span>
-    <span class="tag">&lt;th&gt;</span>Nom<span class="tag">&lt;/th&gt;</span>
-    <span class="tag">&lt;th&gt;</span>Prénom<span class="tag">&lt;/th&gt;</span>
+    <span class="tag">&lt;th&gt;</span>Nom<span class="tag">&lt;/th&gt;</span>    <span class="tag">&lt;th&gt;</span>Prénom<span class="tag">&lt;/th&gt;</span>
   <span class="tag">&lt;/tr&gt;</span>
   <span class="tag">&lt;tr&gt;</span>
-    <span class="tag">&lt;td&gt;</span>Diop<span class="tag">&lt;/td&gt;</span>
-    <span class="tag">&lt;td&gt;</span>Assane<span class="tag">&lt;/td&gt;</span>
+    <span class="tag">&lt;td&gt;</span>Diop<span class="tag">&lt;/td&gt;</span>   <span class="tag">&lt;td&gt;</span>Assane<span class="tag">&lt;/td&gt;</span>
   <span class="tag">&lt;/tr&gt;</span>
 <span class="tag">&lt;/table&gt;</span></div>
-
-</div>
-
-<!-- ========== PAGE CSS ========== -->
-<div class="page" id="page-css">
-
-  <h2>Survol du langage CSS</h2>
-
-  <div class="carte">
-    <div class="titre">Rôle du CSS</div>
-    <p>CSS (Cascading Style Sheets) se charge de la <strong>présentation</strong>. Un même fichier HTML peut avoir plusieurs apparences avec différentes feuilles de style.</p>
   </div>
 
-  <!-- localisation -->
-  <h3>Où écrire le CSS ?</h3>
-  <table>
-    <tr><th>Méthode</th><th>Exemple</th></tr>
-    <tr><td>Balise &lt;style&gt; dans &lt;head&gt;</td><td>&lt;style type="text/css"&gt;…&lt;/style&gt;</td></tr>
-    <tr><td>Fichier externe via &lt;link&gt;</td><td>&lt;link rel="stylesheet" href="style.css"/&gt;</td></tr>
-    <tr><td>Attribut style inline</td><td>&lt;p style="color:red;"&gt;</td></tr>
-  </table>
+  <!-- PAGE CSS -->
+  <div class="page" id="page-css">
+    <h2>Survol du langage CSS</h2>
 
-  <!-- syntaxe -->
-  <h3>Syntaxe d'une règle CSS</h3>
-  <p>Une règle CSS = un sélecteur + une déclaration entre accolades.</p>
+    <div class="carte">
+      <div class="titre">Rôle du CSS</div>
+      <p>CSS (Cascading Style Sheets) gère la <strong>présentation</strong>. Un même HTML peut avoir plusieurs apparences avec différentes feuilles de style.</p>
+    </div>
 
-  <div class="code"><span class="fn">h1</span> { <span class="attr">color</span>: <span class="str">blue</span>; <span class="attr">text-align</span>: <span class="str">center</span>; }</div>
+    <h3>Où écrire le CSS ?</h3>
+    <table>
+      <tr><th>Méthode</th><th>Exemple</th></tr>
+      <tr><td>Balise &lt;style&gt;</td><td>&lt;style&gt; ... &lt;/style&gt;</td></tr>
+      <tr><td>Fichier externe</td><td>&lt;link rel="stylesheet" href="style.css"&gt;</td></tr>
+      <tr><td>Attribut inline</td><td>&lt;p style="color:red;"&gt;</td></tr>
+    </table>
 
-  <!-- sélecteurs -->
-  <h3>Les types de sélecteurs</h3>
+    <h3>Syntaxe d'une règle CSS</h3>
+    <div class="code"><span class="fn">h1</span> { <span class="attr">color</span>: <span class="str">blue</span>; <span class="attr">text-align</span>: <span class="str">center</span>; }</div>
 
-  <div class="code"><span class="com">-- sélecteur de balise --</span>
-<span class="fn">p</span> { <span class="attr">margin-top</span>: <span class="str">0</span>; <span class="attr">margin-bottom</span>: <span class="str">0</span>; }
+    <h3>Les sélecteurs</h3>
+    <div class="code"><span class="com">-- sélecteur de balise --</span>
+<span class="fn">p</span> { <span class="attr">color</span>: <span class="str">gray</span>; }
 
-<span class="com">-- sélecteur de classe (préfixé d'un point) --</span>
-<span class="fn">.sommaire</span> { <span class="attr">color</span>: <span class="str">red</span>; }
-<span class="tag">&lt;a</span> <span class="attr">class=</span><span class="str">"sommaire"</span><span class="tag">&gt;</span>lien rouge<span class="tag">&lt;/a&gt;</span>
+<span class="com">-- sélecteur de classe (point) --</span>
+<span class="fn">.rouge</span> { <span class="attr">color</span>: <span class="str">red</span>; }
+<span class="tag">&lt;p</span> <span class="attr">class=</span><span class="str">"rouge"</span><span class="tag">&gt;</span>texte rouge<span class="tag">&lt;/p&gt;</span>
 
-<span class="com">-- sélecteur d'identifiant (préfixé d'un #) --</span>
-<span class="fn">#monId</span> { <span class="attr">background-color</span>: <span class="str">yellow</span>; }
-<span class="tag">&lt;div</span> <span class="attr">id=</span><span class="str">"monId"</span><span class="tag">&gt;</span>contenu<span class="tag">&lt;/div&gt;</span></div>
+<span class="com">-- sélecteur d'identifiant (dièse) --</span>
+<span class="fn">#menu</span> { <span class="attr">background</span>: <span class="str">yellow</span>; }
+<span class="tag">&lt;div</span> <span class="attr">id=</span><span class="str">"menu"</span><span class="tag">&gt;</span>contenu<span class="tag">&lt;/div&gt;</span></div>
 
-  <!-- pseudo-classes -->
-  <h3>Pseudo-classes et pseudo-éléments</h3>
-  <div class="code"><span class="com">-- survol d'un lien --</span>
-<span class="fn">a:hover</span> { <span class="attr">text-decoration</span>: <span class="str">none</span>; }
+    <h3>Pseudo-classes</h3>
+    <div class="code"><span class="fn">a:hover</span> { <span class="attr">color</span>: <span class="str">red</span>; <span class="attr">text-decoration</span>: <span class="str">none</span>; }</div>
 
-<span class="com">-- lien d'une classe précise au survol --</span>
-<span class="fn">a.lien:hover</span> { <span class="attr">text-decoration</span>: <span class="str">none</span>; <span class="attr">color</span>: <span class="str">red</span>; }</div>
+    <h3>Regroupement et héritage</h3>
+    <div class="code"><span class="com">-- même style pour plusieurs sélecteurs --</span>
+<span class="fn">h1, h2, p</span> { <span class="attr">margin-left</span>: <span class="str">0</span>; }
 
-  <!-- regroupement -->
-  <h3>Regroupement de sélecteurs</h3>
-  <div class="code"><span class="com">-- appliquer le même style à plusieurs balises --</span>
-<span class="fn">.texte, p, h1, h2</span> { <span class="attr">margin-left</span>: <span class="str">0</span>; }
-
-<span class="com">-- sélection hiérarchique : p dans un div --</span>
+<span class="com">-- p à l'intérieur d'un div --</span>
 <span class="fn">div p</span> { <span class="attr">color</span>: <span class="str">gray</span>; }
 
-<span class="com">-- propriété raccourcie : font --</span>
+<span class="com">-- propriété raccourcie font --</span>
 <span class="fn">p</span> { <span class="attr">font</span>: <span class="str">bold 14px Arial</span>; }</div>
 
-  <div class="astuce">
-    <strong>Propriétés raccourcies utiles</strong>
-    font · border · background — elles regroupent plusieurs valeurs en une seule déclaration.
-  </div>
+    <div class="astuce"><b>Propriétés raccourcies</b>font · border · background — elles regroupent plusieurs valeurs en une seule ligne.</div>
 
-  <!-- demo CSS -->
-  <h3>Démo — Applique du style en direct</h3>
-  <div class="demo">
-    <label>Choisis une couleur de texte :</label>
-    <select id="css-couleur">
-      <option value="#4ade80">Vert</option>
-      <option value="#f97316">Orange</option>
-      <option value="#60a5fa">Bleu</option>
-      <option value="#f9fafb">Blanc</option>
-    </select>
-    <label>Choisis une taille de texte :</label>
-    <select id="css-taille">
-      <option value="14px">Petit (14px)</option>
-      <option value="18px">Moyen (18px)</option>
-      <option value="24px">Grand (24px)</option>
-    </select>
-    <button onclick="appliquerCSS()">Appliquer</button>
-    <div class="resultat" id="css-resultat">
-      Le CSS change l'apparence sans toucher au contenu HTML.
+    <h3>Démo — Style en direct</h3>
+    <div class="demo">
+      <label>Couleur du texte :</label>
+      <select id="css-couleur">
+        <option value="#4ade80">Vert</option>
+        <option value="#f97316">Orange</option>
+        <option value="#60a5fa">Bleu</option>
+        <option value="#c084fc">Violet</option>
+      </select>
+      <label>Taille du texte :</label>
+      <select id="css-taille">
+        <option value="13px">Petit (13px)</option>
+        <option value="17px">Moyen (17px)</option>
+        <option value="22px">Grand (22px)</option>
+      </select>
+      <button id="btn-appliquer">Appliquer</button>
+      <div class="resultat" id="css-resultat">Le CSS change l'apparence sans toucher au contenu HTML.</div>
     </div>
   </div>
 
-</div>
+  <!-- PAGE JS -->
+  <div class="page" id="page-js">
+    <h2>Le langage JavaScript</h2>
 
-<!-- ========== PAGE JS ========== -->
-<div class="page" id="page-js">
+    <div class="carte">
+      <div class="titre">C'est quoi JavaScript ?</div>
+      <p>JS est un langage de script incorporé dans le HTML. Il rend le contenu <strong>interactif</strong> : validation de formulaires, animations, calculs, etc.</p>
+    </div>
 
-  <h2>Le langage JavaScript</h2>
+    <h3>Où placer le script ?</h3>
+    <div class="code"><span class="tag">&lt;script</span> <span class="attr">type=</span><span class="str">"text/javascript"</span><span class="tag">&gt;</span>
+  <span class="com">// code ici</span>
+<span class="tag">&lt;/script&gt;</span>
 
-  <div class="carte">
-    <div class="titre">C'est quoi JavaScript ?</div>
-    <p>JS est un langage de script incorporé dans le HTML. Il rend le contenu <strong>interactif</strong> : validation de formulaires, animations, boites de dialogue, etc.</p>
-  </div>
+<span class="com">-- ou fichier externe --</span>
+<span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span></div>
 
-  <!-- placement -->
-  <h3>Où placer le script ?</h3>
-  <div class="code"><span class="com">-- dans le body (sans fonctions) --</span>
-<span class="tag">&lt;body&gt;</span>
-  <span class="tag">&lt;script</span> <span class="attr">type=</span><span class="str">"text/javascript"</span><span class="tag">&gt;</span>
-    <span class="com">// code ici</span>
-  <span class="tag">&lt;/script&gt;</span>
-<span class="tag">&lt;/body&gt;</span>
+    <h3>Variables</h3>
+    <div class="code"><span class="kw">var</span> nom = <span class="str">'Diop'</span>;          <span class="com">// chaîne de caractères</span>
+<span class="kw">var</span> age = <span class="str">20</span>;             <span class="com">// nombre</span>
+<span class="kw">var</span> actif = <span class="kw">true</span>;         <span class="com">// booléen</span>
+<span class="kw">var</span> x = <span class="str">5</span>, y = <span class="str">10</span>;       <span class="com">// plusieurs variables</span></div>
 
-<span class="com">-- fichier externe --</span>
-<span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"mon_script.js"</span><span class="tag">&gt;&lt;/script&gt;</span></div>
+    <h3>Les boites de dialogue</h3>
+    <table>
+      <tr><th>Fonction</th><th>Rôle</th></tr>
+      <tr><td>alert()</td><td>Affiche un message</td></tr>
+      <tr><td>prompt()</td><td>Demande une saisie — retourne la valeur</td></tr>
+      <tr><td>confirm()</td><td>Demande OK ou Annuler — retourne true/false</td></tr>
+    </table>
 
-  <!-- variables -->
-  <h3>Variables — déclaration et initialisation</h3>
-  <div class="code"><span class="kw">var</span> date;                  <span class="com">// déclaration sans affectation</span>
-<span class="kw">var</span> compteur = <span class="str">0</span>;          <span class="com">// déclaration avec affectation</span>
-nom = <span class="str">'Diop'</span>;              <span class="com">// déclaration implicite</span>
-<span class="kw">var</span> prem = <span class="str">5</span>, second = <span class="str">18</span>; <span class="com">// plusieurs variables</span>
-<span class="kw">var</span> maChaine = <span class="str">""</span>;          <span class="com">// chaine vide</span>
-<span class="kw">var</span> isOk = <span class="kw">true</span>;            <span class="com">// booléen</span></div>
+    <h3>Opérateurs</h3>
+    <table>
+      <tr><th>Opérateur</th><th>Description</th><th>Exemple</th></tr>
+      <tr><td>+</td><td>Addition / Concaténation</td><td>2+3 ou 'bon'+'jour'</td></tr>
+      <tr><td>-</td><td>Soustraction</td><td>5 - 3</td></tr>
+      <tr><td>*</td><td>Multiplication</td><td>2 * 3</td></tr>
+      <tr><td>/</td><td>Division</td><td>10 / 2</td></tr>
+      <tr><td>%</td><td>Modulo (reste)</td><td>13 % 5 = 3</td></tr>
+      <tr><td>++</td><td>Incrémentation</td><td>i++ = i + 1</td></tr>
+    </table>
 
-  <!-- boites de dialogue -->
-  <h3>Les boites de dialogues</h3>
-  <table>
-    <tr><th>Fonction</th><th>Rôle</th></tr>
-    <tr><td>alert()</td><td>Affiche un message</td></tr>
-    <tr><td>prompt()</td><td>Demande une saisie — retourne la valeur</td></tr>
-    <tr><td>confirm()</td><td>Demande OK ou Annuler — retourne true/false</td></tr>
-  </table>
-
-  <!-- opérateurs -->
-  <h3>Opérateurs arithmétiques</h3>
-  <table>
-    <tr><th>Opérateur</th><th>Description</th><th>Exemple</th></tr>
-    <tr><td>+</td><td>Addition / Concaténation</td><td>2+3 ou 'bon'+'jour'</td></tr>
-    <tr><td>-</td><td>Soustraction</td><td>2 - 3</td></tr>
-    <tr><td>*</td><td>Multiplication</td><td>2 * 3</td></tr>
-    <tr><td>/</td><td>Division</td><td>a / b</td></tr>
-    <tr><td>%</td><td>Modulo</td><td>13 % 5 = 3</td></tr>
-    <tr><td>++</td><td>Incrémentation</td><td>i++ équivaut à i = i + 1</td></tr>
-  </table>
-
-  <!-- conditions -->
-  <h3>Structures conditionnelles</h3>
-  <div class="code"><span class="kw">if</span> (condition)
-{
-  <span class="com">// instructions si vrai</span>
-}
-<span class="kw">else</span>
-{
-  <span class="com">// instructions si faux</span>
-}
-
-<span class="com">-- switch --</span>
-<span class="kw">switch</span>(x) {
-  <span class="kw">case</span> 1 : instructions1; <span class="kw">break</span>;
-  <span class="kw">case</span> 2 : instructions2; <span class="kw">break</span>;
-  <span class="kw">default</span> : instructions3; <span class="kw">break</span>;
+    <h3>Conditions</h3>
+    <div class="code"><span class="kw">if</span> (age &gt;= 18) {
+  alert(<span class="str">"Majeur"</span>);
+} <span class="kw">else</span> {
+  alert(<span class="str">"Mineur"</span>);
 }</div>
 
-  <!-- boucles -->
-  <h3>Structures itératives</h3>
-  <div class="code"><span class="com">-- for --</span>
-<span class="kw">for</span> (valeur de départ; condition; progression) {
-  <span class="com">// instructions</span>
+    <h3>Boucles</h3>
+    <div class="code"><span class="com">-- for --</span>
+<span class="kw">for</span> (<span class="kw">var</span> i = 0; i &lt; 5; i++) {
+  document.<span class="fn">write</span>(i);
 }
 
 <span class="com">-- while --</span>
-<span class="kw">while</span>(condition) {
-  <span class="com">// instructions</span>
+<span class="kw">while</span> (i &lt; 5) {
+  document.<span class="fn">write</span>(i);
+  i++;
 }</div>
 
-  <!-- fonctions -->
-  <h3>Les fonctions</h3>
-  <div class="code"><span class="kw">function</span> <span class="fn">volumeCylindre</span>(r, h) {
-  <span class="kw">var</span> pi = <span class="str">3.14159</span>;
+    <h3>Fonctions</h3>
+    <div class="code"><span class="kw">function</span> <span class="fn">volumeCylindre</span>(r, h) {
+  <span class="kw">var</span> pi = 3.14159;
   <span class="kw">return</span> pi * r * r * h;
 }
 
-alert(<span class="fn">volumeCylindre</span>(<span class="str">1</span>, <span class="str">2</span>));</div>
+alert(<span class="fn">volumeCylindre</span>(1, 2));</div>
 
-  <!-- événements -->
-  <h3>La gestion des évènements</h3>
-  <table>
-    <tr><th>Evènement</th><th>Gestionnaire</th><th>Effet</th></tr>
-    <tr><td>Clic</td><td>onClick</td><td>Au clic de la souris</td></tr>
-    <tr><td>Chargement</td><td>onLoad</td><td>Au chargement de la page</td></tr>
-    <tr><td>Survol</td><td>onMouseOver</td><td>Quand la souris survole</td></tr>
-    <tr><td>Sortie</td><td>onMouseOut</td><td>Quand la souris sort</td></tr>
-    <tr><td>Changement</td><td>onChange</td><td>Quand la valeur change</td></tr>
-    <tr><td>Soumission</td><td>onSubmit</td><td>Envoi du formulaire</td></tr>
-  </table>
+    <h3>Évènements</h3>
+    <table>
+      <tr><th>Évènement</th><th>Gestionnaire</th><th>Déclencheur</th></tr>
+      <tr><td>Clic</td><td>onClick</td><td>Clic souris</td></tr>
+      <tr><td>Chargement</td><td>onLoad</td><td>Chargement page</td></tr>
+      <tr><td>Survol</td><td>onMouseOver</td><td>Souris sur l'élément</td></tr>
+      <tr><td>Sortie</td><td>onMouseOut</td><td>Souris qui sort</td></tr>
+      <tr><td>Changement</td><td>onChange</td><td>Valeur modifiée</td></tr>
+      <tr><td>Soumission</td><td>onSubmit</td><td>Envoi formulaire</td></tr>
+    </table>
 
-  <div class="code"><span class="com">-- exemple : clic sur un bouton --</span>
-<span class="tag">&lt;input</span> <span class="attr">type=</span><span class="str">"button"</span> <span class="attr">value=</span><span class="str">"Cliquer"</span>
-       <span class="attr">onclick=</span><span class="str">"maFonction()"</span> <span class="tag">/&gt;</span></div>
-
-  <!-- demo JS -->
-  <h3>Démo — Calcul avec JS</h3>
-  <p>Exemple tiré du cours : lire un nombre et afficher son double.</p>
-  <div class="demo">
-    <label>Entrez un nombre :</label>
-    <input type="number" id="js-nombre" placeholder="ex: 23" />
-    <button onclick="calculerDouble()">Calculer le double</button>
-    <div class="resultat" id="js-resultat">Le résultat apparaîtra ici.</div>
-  </div>
-
-  <!-- objets -->
-  <h3>Les objets principaux</h3>
-  <table>
-    <tr><th>Objet</th><th>Description</th></tr>
-    <tr><td>navigator</td><td>Le navigateur du visiteur</td></tr>
-    <tr><td>window</td><td>La fenêtre où s'affiche la page</td></tr>
-    <tr><td>location</td><td>L'adresse de la page affichée</td></tr>
-    <tr><td>history</td><td>L'historique des liens visités</td></tr>
-    <tr><td>document</td><td>Le contenu du document courant</td></tr>
-  </table>
-
-  <div class="code"><span class="com">-- accéder à un élément HTML par son id --</span>
+    <h3>Accès au DOM</h3>
+    <div class="code"><span class="com">-- accéder à un élément par son id --</span>
 document.<span class="fn">getElementById</span>(<span class="str">"monId"</span>)
 
-<span class="com">-- changer la couleur du texte --</span>
-document.<span class="attr">fgColor</span> = <span class="str">"red"</span>;
+<span class="com">-- modifier son contenu --</span>
+document.<span class="fn">getElementById</span>(<span class="str">"monId"</span>).innerHTML = <span class="str">"Nouveau texte"</span>;
 
 <span class="com">-- écrire dans la page --</span>
 document.<span class="fn">write</span>(<span class="str">"Bonjour !"</span>);</div>
 
-</div>
-
-<!-- ========== PAGE QUIZ ========== -->
-<div class="page" id="page-quiz">
-
-  <h2>Quiz — Teste tes connaissances</h2>
-
-  <!-- Q1 -->
-  <div class="question">
-    <p>1. Le HTML est un langage de programmation ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Faux ✗ — Le HTML est un langage de DESCRIPTION de données, pas de programmation.')">Vrai</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — Le HTML décrit la structure, il ne programme pas.')">Faux</button>
+    <h3>Démo — Calcul du double</h3>
+    <div class="demo">
+      <label>Entrez un nombre :</label>
+      <input type="number" id="js-nombre" placeholder="ex: 23">
+      <button id="btn-double">Calculer le double</button>
+      <div class="resultat" id="js-resultat">Le résultat apparaîtra ici.</div>
     </div>
-    <div class="reponse"></div>
   </div>
 
-  <!-- Q2 -->
-  <div class="question">
-    <p>2. Quelle balise crée un saut de ligne en HTML ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — &lt;p&gt; crée un paragraphe, pas un saut de ligne.')">&#60;p&#62;</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — &lt;br /&gt; est une balise orpheline qui insère un saut de ligne.')">&#60;br /&#62;</button>
-      <button onclick="repondre(this, false, 'Non ✗ — &lt;h1&gt; est un titre de niveau 1.')">&#60;h1&#62;</button>
+  <!-- PAGE QUIZ -->
+  <div class="page" id="page-quiz">
+    <h2>Quiz — Teste tes connaissances</h2>
+    <div class="score">Score : <span id="score-val">0</span> / 8</div>
+
+    <div class="question" id="q1">
+      <p>1. Le HTML est un langage de programmation ?</p>
+      <div class="options">
+        <button data-q="q1" data-ok="non" data-msg="Faux — Le HTML est un langage de DESCRIPTION, pas de programmation.">Vrai</button>
+        <button data-q="q1" data-ok="oui" data-msg="Correct ✓ — Le HTML décrit la structure, il ne programme pas.">Faux</button>
+      </div>
+      <div class="feedback" id="fb-q1"></div>
     </div>
-    <div class="reponse"></div>
+
+    <div class="question" id="q2">
+      <p>2. Quelle balise crée un saut de ligne ?</p>
+      <div class="options">
+        <button data-q="q2" data-ok="non" data-msg="Non — &lt;p&gt; crée un paragraphe.">&lt;p&gt;</button>
+        <button data-q="q2" data-ok="oui" data-msg="Correct ✓ — &lt;br /&gt; insère un saut de ligne.">&lt;br /&gt;</button>
+        <button data-q="q2" data-ok="non" data-msg="Non — &lt;h1&gt; est un titre de niveau 1.">&lt;h1&gt;</button>
+      </div>
+      <div class="feedback" id="fb-q2"></div>
+    </div>
+
+    <div class="question" id="q3">
+      <p>3. En CSS, un sélecteur qui commence par un point ( . ) est...</p>
+      <div class="options">
+        <button data-q="q3" data-ok="non" data-msg="Non — Un identifiant commence par #.">Un identifiant</button>
+        <button data-q="q3" data-ok="oui" data-msg="Correct ✓ — .maClasse est un sélecteur de classe.">Une classe</button>
+        <button data-q="q3" data-ok="non" data-msg="Non — Une pseudo-classe utilise : comme a:hover.">Une pseudo-classe</button>
+      </div>
+      <div class="feedback" id="fb-q3"></div>
+    </div>
+
+    <div class="question" id="q4">
+      <p>4. Que retourne confirm() quand on clique sur OK ?</p>
+      <div class="options">
+        <button data-q="q4" data-ok="non" data-msg="Non — null vient de prompt() annulé.">null</button>
+        <button data-q="q4" data-ok="non" data-msg="Non — confirm() ne retourne pas de texte.">Le texte saisi</button>
+        <button data-q="q4" data-ok="oui" data-msg="Correct ✓ — confirm() retourne true si OK, false si Annuler.">true</button>
+      </div>
+      <div class="feedback" id="fb-q4"></div>
+    </div>
+
+    <div class="question" id="q5">
+      <p>5. Quel attribut ouvre un lien dans un nouvel onglet ?</p>
+      <div class="options">
+        <button data-q="q5" data-ok="non" data-msg="Non — href contient l'adresse de destination.">href</button>
+        <button data-q="q5" data-ok="non" data-msg="Non — title affiche une bulle d'aide.">title</button>
+        <button data-q="q5" data-ok="oui" data-msg='Correct ✓ — target="_blank" ouvre dans un nouvel onglet.'>target="_blank"</button>
+      </div>
+      <div class="feedback" id="fb-q5"></div>
+    </div>
+
+    <div class="question" id="q6">
+      <p>6. Que fait i++ en JavaScript ?</p>
+      <div class="options">
+        <button data-q="q6" data-ok="oui" data-msg="Correct ✓ — i++ ajoute 1 à i. C'est une incrémentation.">Ajoute 1 à i</button>
+        <button data-q="q6" data-ok="non" data-msg="Non — Pour soustraire 1, on utilise i--.">Soustrait 1 à i</button>
+        <button data-q="q6" data-ok="non" data-msg="Non — Pour multiplier, on écrit i = i * 2.">Multiplie i par 2</button>
+      </div>
+      <div class="feedback" id="fb-q6"></div>
+    </div>
+
+    <div class="question" id="q7">
+      <p>7. Quel sélecteur CSS cible &lt;div id="menu"&gt; ?</p>
+      <div class="options">
+        <button data-q="q7" data-ok="non" data-msg="Non — .menu désigne une classe.">.menu</button>
+        <button data-q="q7" data-ok="oui" data-msg='Correct ✓ — #menu cible l&apos;attribut id="menu".'>#menu</button>
+        <button data-q="q7" data-ok="non" data-msg="Non — div menu désigne un menu dans un div.">div menu</button>
+      </div>
+      <div class="feedback" id="fb-q7"></div>
+    </div>
+
+    <div class="question" id="q8">
+      <p>8. Quelle méthode JS accède à un élément par son id ?</p>
+      <div class="options">
+        <button data-q="q8" data-ok="non" data-msg="Non — getElementsByTagName() cherche par balise.">getElementsByTagName()</button>
+        <button data-q="q8" data-ok="oui" data-msg="Correct ✓ — getElementById() est la méthode standard pour accéder par id.">getElementById()</button>
+        <button data-q="q8" data-ok="non" data-msg="Non — getElementsByName() cherche par attribut name.">getElementsByName()</button>
+      </div>
+      <div class="feedback" id="fb-q8"></div>
+    </div>
+
   </div>
 
-  <!-- Q3 -->
-  <div class="question">
-    <p>3. En CSS, comment appelle-t-on un sélecteur qui commence par un point ( . ) ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — Un identifiant commence par # et est unique dans la page.')">Un identifiant</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — .maClasse est un sélecteur de classe. Il peut s\'appliquer à plusieurs éléments.')">Une classe</button>
-      <button onclick="repondre(this, false, 'Non ✗ — Une pseudo-classe utilise : comme a:hover.')">Une pseudo-classe</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
+  <footer>Université Cheikh Anta Diop · Ecole Supérieure Polytechnique · Dr. Mouhamed DIOP</footer>
 
-  <!-- Q4 -->
-  <div class="question">
-    <p>4. En JavaScript, que retourne la fonction confirm() quand on clique sur OK ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — null est retourné par prompt() quand on annule.')">null</button>
-      <button onclick="repondre(this, false, 'Non ✗ — confirm() ne retourne pas de texte.')">Le texte saisi</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — confirm() retourne true si OK, false si Annuler.')">true</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
-
-  <!-- Q5 -->
-  <div class="question">
-    <p>5. Quel attribut HTML permet d'ouvrir un lien dans un nouvel onglet ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — href contient l\'adresse de destination, pas le comportement d\'ouverture.')">href</button>
-      <button onclick="repondre(this, false, 'Non ✗ — title affiche une bulle d\'aide au survol.')">title</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — target="_blank" ouvre le lien dans un nouvel onglet.')">target="_blank"</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
-
-  <!-- Q6 -->
-  <div class="question">
-    <p>6. En JavaScript, que fait i++ ?</p>
-    <div class="options">
-      <button onclick="repondre(this, true, 'Correct ✓ — i++ est une incrémentation, équivalent à i = i + 1.')">Ajoute 1 à i</button>
-      <button onclick="repondre(this, false, 'Non ✗ — Pour soustraire 1, on utilise i--.')">Soustrait 1 à i</button>
-      <button onclick="repondre(this, false, 'Non ✗ — Pour multiplier, on utilise i = i * 2.')">Multiplie i par 2</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
-
-  <!-- Q7 -->
-  <div class="question">
-    <p>7. En CSS, quel sélecteur s'applique à l'élément &lt;div id="menu"&gt; ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — .menu désigne une classe, pas un identifiant.')">. menu</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — #menu cible l\'élément avec l\'attribut id="menu".')">&#35;menu</button>
-      <button onclick="repondre(this, false, 'Non ✗ — div menu désignerait un élément menu à l\'intérieur d\'un div.')">div menu</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
-
-  <!-- Q8 -->
-  <div class="question">
-    <p>8. Quelle méthode JS permet d'accéder à un élément HTML via son attribut id ?</p>
-    <div class="options">
-      <button onclick="repondre(this, false, 'Non ✗ — getElementsByTagName() cherche par nom de balise.')">getElementsByTagName()</button>
-      <button onclick="repondre(this, true, 'Correct ✓ — document.getElementById("monId") est la méthode standard.')">getElementById()</button>
-      <button onclick="repondre(this, false, 'Non ✗ — getElementsByName() cherche par l\'attribut name.')">getElementsByName()</button>
-    </div>
-    <div class="reponse"></div>
-  </div>
-
-</div>
-
-<footer>
-  Université Cheikh Anta Diop · Ecole Supérieure Polytechnique · Dr. Mouhamed DIOP
-</footer>
+</div><!-- fin .wrap -->
 
 <script>
-  // navigation
-  function afficher(nom, btn) {
-    document.querySelectorAll('.page').forEach(function(p) {
-      p.classList.remove('actif');
-    });
-    document.querySelectorAll('nav button').forEach(function(b) {
-      b.classList.remove('actif');
-    });
-    document.getElementById('page-' + nom).classList.add('actif');
-    btn.classList.add('actif');
+  var score = 0;
+
+  // --- Navigation ---
+  document.getElementById("btn-html").addEventListener("click", function() { allerA("html"); });
+  document.getElementById("btn-css").addEventListener("click",  function() { allerA("css");  });
+  document.getElementById("btn-js").addEventListener("click",   function() { allerA("js");   });
+  document.getElementById("btn-quiz").addEventListener("click", function() { allerA("quiz"); });
+
+  function allerA(nom) {
+    // cacher toutes les pages
+    var pages = document.querySelectorAll(".page");
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].classList.remove("actif");
+    }
+    // désactiver tous les boutons nav
+    var boutons = document.querySelectorAll("nav button");
+    for (var i = 0; i < boutons.length; i++) {
+      boutons[i].classList.remove("actif");
+    }
+    // afficher la bonne page
+    document.getElementById("page-" + nom).classList.add("actif");
+    // activer le bon bouton
+    document.getElementById("btn-" + nom).classList.add("actif");
     window.scrollTo(0, 0);
   }
 
-  // demo CSS
-  function appliquerCSS() {
-    var couleur = document.getElementById('css-couleur').value;
-    var taille  = document.getElementById('css-taille').value;
-    var res     = document.getElementById('css-resultat');
-    res.style.color    = couleur;
-    res.style.fontSize = taille;
-  }
+  // --- Démo CSS ---
+  document.getElementById("btn-appliquer").addEventListener("click", function() {
+    var couleur = document.getElementById("css-couleur").value;
+    var taille  = document.getElementById("css-taille").value;
+    var resultat = document.getElementById("css-resultat");
+    resultat.style.color    = couleur;
+    resultat.style.fontSize = taille;
+  });
 
-  // demo JS — calculer le double (exemple du cours)
-  function calculerDouble() {
-    var nombre   = document.getElementById('js-nombre').value;
-    var resultat = document.getElementById('js-resultat');
-    if (nombre === '') {
-      resultat.textContent = 'Entrez un nombre d\'abord.';
-      resultat.style.color = '#ef4444';
-      return;
+  // --- Démo JS double ---
+  document.getElementById("btn-double").addEventListener("click", function() {
+    var nombre  = document.getElementById("js-nombre").value;
+    var resultat = document.getElementById("js-resultat");
+    if (nombre === "") {
+      resultat.textContent = "Entrez un nombre d'abord.";
+      resultat.style.color = "#ef4444";
+    } else {
+      resultat.textContent = "Le double de " + nombre + " est : " + (nombre * 2);
+      resultat.style.color = "#4ade80";
     }
-    var double = Number(nombre) * 2;
-    resultat.textContent = 'Le double de ' + nombre + ' est : ' + double;
-    resultat.style.color = '#4ade80';
-  }
+  });
 
-  // quiz
-  function repondre(btn, correct, feedback) {
-    var question = btn.closest('.question');
-    question.querySelectorAll('button').forEach(function(b) {
-      b.disabled = true;
-      b.style.cursor = 'default';
+  // --- Quiz ---
+  var boutons_quiz = document.querySelectorAll(".options button");
+  for (var i = 0; i < boutons_quiz.length; i++) {
+    boutons_quiz[i].addEventListener("click", function() {
+      var btn       = this;
+      var idQuestion = btn.getAttribute("data-q");
+      var correct   = btn.getAttribute("data-ok");
+      var message   = btn.getAttribute("data-msg");
+
+      // si déjà répondu, ignorer
+      var questionDiv = document.getElementById(idQuestion);
+      if (questionDiv.querySelector(".bon") || questionDiv.querySelector(".faux")) {
+        return;
+      }
+
+      // bloquer tous les boutons de cette question
+      var btnsQuestion = questionDiv.querySelectorAll("button");
+      for (var j = 0; j < btnsQuestion.length; j++) {
+        btnsQuestion[j].disabled = true;
+      }
+
+      // colorer le bouton
+      if (correct === "oui") {
+        btn.classList.add("bon");
+        score++;
+        document.getElementById("score-val").textContent = score;
+      } else {
+        btn.classList.add("faux");
+      }
+
+      // afficher le feedback
+      var fb = document.getElementById("fb-" + idQuestion);
+      fb.innerHTML = message;
+      fb.style.color = (correct === "oui") ? "#4ade80" : "#ef4444";
     });
-    btn.classList.add(correct ? 'bon' : 'faux');
-    var rep = question.querySelector('.reponse');
-    rep.textContent = feedback;
-    rep.style.color = correct ? '#4ade80' : '#ef4444';
   }
 </script>
 
