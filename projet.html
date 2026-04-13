@@ -119,8 +119,7 @@
       margin: 12px 0;
     }
     .demo label { color: #888; font-size: 12px; display: block; margin-bottom: 6px; }
-    .demo select,
-    .demo input {
+    .demo select, .demo input {
       width: 100%;
       background: #0a0a0a;
       border: 1px solid #333;
@@ -175,8 +174,8 @@
       cursor: pointer;
     }
     .options button:hover { background: #1e1e1e; color: #fff; }
-    .options button.bon  { border-color: #4ade80; background: #0d1a0d; color: #4ade80; }
-    .options button.faux { border-color: #ef4444; background: #1a0d0d; color: #ef4444; }
+    .options button.bon  { border-color: #4ade80 !important; background: #0d1a0d !important; color: #4ade80 !important; }
+    .options button.faux { border-color: #ef4444 !important; background: #1a0d0d !important; color: #ef4444 !important; }
     .feedback { margin-top: 8px; font-size: 12px; font-style: italic; min-height: 16px; }
 
     /* SCORE */
@@ -208,7 +207,7 @@
 
   <div class="header">
     <h1>Programmation Web — ESP Dakar</h1>
-    <p>Université Cheikh Anta Diop · Département Génie Informatique · Licence</p>
+    <p>Université Cheikh Anta Diop · Département Génie Informatique</p>
     <p class="auteur">Dr. Mouhamed DIOP — mouhamed.diop@esp.sn</p>
   </div>
 
@@ -223,33 +222,13 @@
     <h2>Survol du langage HTML</h2>
     <div class="carte">
       <div class="titre">C'est quoi le HTML ?</div>
-      <p>HyperText Markup Language — un langage de <strong>description</strong>, pas de programmation. Il crée des pages web lisibles dans un navigateur.</p>
+      <p>HyperText Markup Language — un langage de <strong>description</strong>, pas de programmation.</p>
     </div>
-    <div class="astuce"><b>HTML vs CSS</b>HTML décrit la structure. CSS gère la présentation. Le W3C recommande de toujours séparer les deux.</div>
-    <h3>Les balises</h3>
-    <div class="code"><span class="tag">&lt;p&gt;</span> Mon chat est fâché <span class="tag">&lt;/p&gt;</span>
-<span class="tag">&lt;br</span> <span class="attr">/</span><span class="tag">&gt;</span></div>
-    <h3>Structure de base</h3>
-    <div class="code"><span class="tag">&lt;!DOCTYPE</span> html<span class="tag">&gt;</span>
-<span class="tag">&lt;html&gt;</span>
-  <span class="tag">&lt;head&gt;</span>
-    <span class="tag">&lt;title&gt;</span>Titre de la page<span class="tag">&lt;/title&gt;</span>
-  <span class="tag">&lt;/head&gt;</span>
-  <span class="tag">&lt;body&gt;</span>
-    Ce qui s'affiche dans le navigateur
-  <span class="tag">&lt;/body&gt;</span>
-<span class="tag">&lt;/html&gt;</span></div>
+    <div class="code"><span class="tag">&lt;p&gt;</span>Ceci est un paragraphe<span class="tag">&lt;/p&gt;</span></div>
   </div>
 
   <div class="page" id="page-css">
     <h2>Survol du langage CSS</h2>
-    <div class="carte">
-      <div class="titre">Rôle du CSS</div>
-      <p>CSS gère la <strong>présentation</strong>.</p>
-    </div>
-    <h3>Syntaxe</h3>
-    <div class="code"><span class="fn">h1</span> { <span class="attr">color</span>: <span class="str">blue</span>; }</div>
-    <h3>Démo — Style en direct</h3>
     <div class="demo">
       <label>Couleur du texte :</label>
       <select id="css-couleur">
@@ -262,21 +241,16 @@
         <option value="13px">Petit</option>
         <option value="22px">Grand</option>
       </select>
-      <button id="btn-appliquer">Appliquer</button>
-      <div class="resultat" id="css-resultat">Le CSS change l'apparence.</div>
+      <button id="btn-appliquer">Appliquer le style</button>
+      <div class="resultat" id="css-resultat">Le CSS modifie l'apparence visuelle.</div>
     </div>
   </div>
 
   <div class="page" id="page-js">
     <h2>Le langage JavaScript</h2>
-    <div class="carte">
-      <div class="titre">C'est quoi JavaScript ?</div>
-      <p>Rend le contenu <strong>interactif</strong>.</p>
-    </div>
-    <h3>Démo — Calcul du double</h3>
     <div class="demo">
       <label>Entrez un nombre :</label>
-      <input type="number" id="js-nombre" placeholder="ex: 23">
+      <input type="number" id="js-nombre" placeholder="ex: 10">
       <button id="btn-double">Calculer le double</button>
       <div class="resultat" id="js-resultat">Le résultat apparaîtra ici.</div>
     </div>
@@ -284,84 +258,94 @@
 
   <div class="page" id="page-quiz">
     <h2>Quiz — Teste tes connaissances</h2>
-    <div class="score">Score : <span id="score-val">0</span> / 8</div>
+    <div class="score">Score : <span id="score-val">0</span> / 4</div>
+    
     <div class="question" id="q1">
       <p>1. Le HTML est un langage de programmation ?</p>
       <div class="options">
-        <button data-q="q1" data-ok="non" data-msg="Faux — C'est de la DESCRIPTION.">Vrai</button>
+        <button data-q="q1" data-ok="non" data-msg="Faux — C'est un langage de description.">Vrai</button>
         <button data-q="q1" data-ok="oui" data-msg="Correct ✓">Faux</button>
       </div>
       <div class="feedback" id="fb-q1"></div>
     </div>
-    </div>
 
-  <footer>Université Cheikh Anta Diop · ESP Dakar</footer>
+    <div class="question" id="q2">
+      <p>2. Quel sélecteur CSS cible un ID ?</p>
+      <div class="options">
+        <button data-q="q2" data-ok="non" data-msg="Le point est pour les classes.">.monId</button>
+        <button data-q="q2" data-ok="oui" data-msg="Correct ✓ Le # est pour les ID.">#monId</button>
+      </div>
+      <div class="feedback" id="fb-q2"></div>
+    </div>
+  </div>
+
+  <footer>Université Cheikh Anta Diop · Ecole Supérieure Polytechnique</footer>
 
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var score = 0;
+document.addEventListener("DOMContentLoaded", function() {
+  var score = 0;
 
-    // --- Navigation ---
-    function allerA(nom) {
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("actif"));
-      document.querySelectorAll("nav button").forEach(b => b.classList.remove("actif"));
-      document.getElementById("page-" + nom).classList.add("actif");
-      document.getElementById("btn-" + nom).classList.add("actif");
-      window.scrollTo(0, 0);
+  // Gestion de la Navigation
+  function changerPage(id) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("actif"));
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("actif"));
+    
+    document.getElementById("page-" + id).classList.add("actif");
+    document.getElementById("btn-" + id).classList.add("actif");
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById("btn-html").onclick = () => changerPage("html");
+  document.getElementById("btn-css").onclick = () => changerPage("css");
+  document.getElementById("btn-js").onclick = () => changerPage("js");
+  document.getElementById("btn-quiz").onclick = () => changerPage("quiz");
+
+  // Démo CSS
+  document.getElementById("btn-appliquer").onclick = function() {
+    var res = document.getElementById("css-resultat");
+    res.style.color = document.getElementById("css-couleur").value;
+    res.style.fontSize = document.getElementById("css-taille").value;
+  };
+
+  // Démo JS
+  document.getElementById("btn-double").onclick = function() {
+    var val = document.getElementById("js-nombre").value;
+    var res = document.getElementById("js-resultat");
+    if (val !== "") {
+      res.textContent = "Le double est : " + (val * 2);
+      res.style.color = "#4ade80";
+    } else {
+      res.textContent = "Veuillez saisir un nombre.";
+      res.style.color = "#ef4444";
     }
+  };
 
-    document.getElementById("btn-html").onclick = () => allerA("html");
-    document.getElementById("btn-css").onclick = () => allerA("css");
-    document.getElementById("btn-js").onclick = () => allerA("js");
-    document.getElementById("btn-quiz").onclick = () => allerA("quiz");
+  // Logique du Quiz
+  document.querySelectorAll(".options button").forEach(btn => {
+    btn.onclick = function() {
+      var qId = this.getAttribute("data-q");
+      var qDiv = document.getElementById(qId);
+      
+      if (qDiv.getAttribute("data-answered")) return;
+      qDiv.setAttribute("data-answered", "true");
 
-    // --- Démo CSS ---
-    document.getElementById("btn-appliquer").onclick = function() {
-      var res = document.getElementById("css-resultat");
-      res.style.color = document.getElementById("css-couleur").value;
-      res.style.fontSize = document.getElementById("css-taille").value;
-    };
-
-    // --- Démo JS ---
-    document.getElementById("btn-double").onclick = function() {
-      var n = document.getElementById("js-nombre").value;
-      var res = document.getElementById("js-resultat");
-      if(n === "") {
-        res.textContent = "Entrez un nombre.";
-        res.style.color = "red";
+      var isCorrect = this.getAttribute("data-ok") === "oui";
+      if (isCorrect) {
+        this.classList.add("bon");
+        score++;
+        document.getElementById("score-val").textContent = score;
       } else {
-        res.textContent = "Résultat : " + (n * 2);
-        res.style.color = "#4ade80";
+        this.classList.add("faux");
       }
+
+      var fb = document.getElementById("fb-" + qId);
+      fb.textContent = this.getAttribute("data-msg");
+      fb.style.color = isCorrect ? "#4ade80" : "#ef4444";
     };
-
-    // --- Quiz ---
-    document.querySelectorAll(".options button").forEach(btn => {
-      btn.onclick = function() {
-        var qId = this.getAttribute("data-q");
-        var isOk = this.getAttribute("data-ok") === "oui";
-        var qDiv = document.getElementById(qId);
-        
-        if (qDiv.dataset.answered) return;
-        qDiv.dataset.answered = "true";
-
-        if (isOk) {
-          this.classList.add("bon");
-          score++;
-          document.getElementById("score-val").textContent = score;
-        } else {
-          this.classList.add("faux");
-        }
-        
-        var fb = document.getElementById("fb-" + qId);
-        fb.innerHTML = this.getAttribute("data-msg");
-        fb.style.color = isOk ? "#4ade80" : "#ef4444";
-      };
-    });
   });
+});
 </script>
-
 </body>
 </html>
