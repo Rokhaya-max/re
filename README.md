@@ -130,6 +130,7 @@
       font-size: 13px;
       padding: 7px 10px;
       margin-bottom: 10px;
+      box-sizing: border-box;
     }
     .demo button {
       background: #1a1a1a;
@@ -174,9 +175,10 @@
       text-align: left;
       cursor: pointer;
     }
-    .options button:hover { background: #1e1e1e; color: #fff; }
+    .options button:hover:not(:disabled) { background: #1e1e1e; color: #fff; }
     .options button.bon  { border-color: #4ade80; background: #0d1a0d; color: #4ade80; }
     .options button.faux { border-color: #ef4444; background: #1a0d0d; color: #ef4444; }
+    .options button:disabled { cursor: default; opacity: 0.7; }
     .feedback { margin-top: 8px; font-size: 12px; font-style: italic; min-height: 16px; }
 
     /* SCORE */
@@ -561,90 +563,89 @@ document.<span class="fn">write</span>(<span class="str">"Bonjour !"</span>);</d
 </div><!-- fin .wrap -->
 
 <script>
-  var score = 0;
+  // ✅ CORRECTION PRINCIPALE : tout le JS est dans DOMContentLoaded
+  // Cela garantit que tous les éléments HTML sont chargés avant que
+  // le script essaie de les trouver — indispensable sur GitHub Pages.
+  document.addEventListener("DOMContentLoaded", function() {
 
-  // --- Navigation ---
-  document.getElementById("btn-html").addEventListener("click", function() { allerA("html"); });
-  document.getElementById("btn-css").addEventListener("click",  function() { allerA("css");  });
-  document.getElementById("btn-js").addEventListener("click",   function() { allerA("js");   });
-  document.getElementById("btn-quiz").addEventListener("click", function() { allerA("quiz"); });
+    var score = 0;
 
-  function allerA(nom) {
-    // cacher toutes les pages
-    var pages = document.querySelectorAll(".page");
-    for (var i = 0; i < pages.length; i++) {
-      pages[i].classList.remove("actif");
-    }
-    // désactiver tous les boutons nav
-    var boutons = document.querySelectorAll("nav button");
-    for (var i = 0; i < boutons.length; i++) {
-      boutons[i].classList.remove("actif");
-    }
-    // afficher la bonne page
-    document.getElementById("page-" + nom).classList.add("actif");
-    // activer le bon bouton
-    document.getElementById("btn-" + nom).classList.add("actif");
-    window.scrollTo(0, 0);
-  }
+    // --- Navigation ---
+    document.getElementById("btn-html").addEventListener("click", function() { allerA("html"); });
+    document.getElementById("btn-css").addEventListener("click",  function() { allerA("css");  });
+    document.getElementById("btn-js").addEventListener("click",   function() { allerA("js");   });
+    document.getElementById("btn-quiz").addEventListener("click", function() { allerA("quiz"); });
 
-  // --- Démo CSS ---
-  document.getElementById("btn-appliquer").addEventListener("click", function() {
-    var couleur = document.getElementById("css-couleur").value;
-    var taille  = document.getElementById("css-taille").value;
-    var resultat = document.getElementById("css-resultat");
-    resultat.style.color    = couleur;
-    resultat.style.fontSize = taille;
-  });
-
-  // --- Démo JS double ---
-  document.getElementById("btn-double").addEventListener("click", function() {
-    var nombre  = document.getElementById("js-nombre").value;
-    var resultat = document.getElementById("js-resultat");
-    if (nombre === "") {
-      resultat.textContent = "Entrez un nombre d'abord.";
-      resultat.style.color = "#ef4444";
-    } else {
-      resultat.textContent = "Le double de " + nombre + " est : " + (nombre * 2);
-      resultat.style.color = "#4ade80";
-    }
-  });
-
-  // --- Quiz ---
-  var boutons_quiz = document.querySelectorAll(".options button");
-  for (var i = 0; i < boutons_quiz.length; i++) {
-    boutons_quiz[i].addEventListener("click", function() {
-      var btn       = this;
-      var idQuestion = btn.getAttribute("data-q");
-      var correct   = btn.getAttribute("data-ok");
-      var message   = btn.getAttribute("data-msg");
-
-      // si déjà répondu, ignorer
-      var questionDiv = document.getElementById(idQuestion);
-      if (questionDiv.querySelector(".bon") || questionDiv.querySelector(".faux")) {
-        return;
+    function allerA(nom) {
+      var pages = document.querySelectorAll(".page");
+      for (var i = 0; i < pages.length; i++) {
+        pages[i].classList.remove("actif");
       }
-
-      // bloquer tous les boutons de cette question
-      var btnsQuestion = questionDiv.querySelectorAll("button");
-      for (var j = 0; j < btnsQuestion.length; j++) {
-        btnsQuestion[j].disabled = true;
+      var boutons = document.querySelectorAll("nav button");
+      for (var i = 0; i < boutons.length; i++) {
+        boutons[i].classList.remove("actif");
       }
+      document.getElementById("page-" + nom).classList.add("actif");
+      document.getElementById("btn-" + nom).classList.add("actif");
+      window.scrollTo(0, 0);
+    }
 
-      // colorer le bouton
-      if (correct === "oui") {
-        btn.classList.add("bon");
-        score++;
-        document.getElementById("score-val").textContent = score;
-      } else {
-        btn.classList.add("faux");
-      }
-
-      // afficher le feedback
-      var fb = document.getElementById("fb-" + idQuestion);
-      fb.innerHTML = message;
-      fb.style.color = (correct === "oui") ? "#4ade80" : "#ef4444";
+    // --- Démo CSS ---
+    document.getElementById("btn-appliquer").addEventListener("click", function() {
+      var couleur  = document.getElementById("css-couleur").value;
+      var taille   = document.getElementById("css-taille").value;
+      var resultat = document.getElementById("css-resultat");
+      resultat.style.color    = couleur;
+      resultat.style.fontSize = taille;
     });
-  }
+
+    // --- Démo JS double ---
+    document.getElementById("btn-double").addEventListener("click", function() {
+      var nombre   = document.getElementById("js-nombre").value;
+      var resultat = document.getElementById("js-resultat");
+      if (nombre === "") {
+        resultat.textContent = "Entrez un nombre d'abord.";
+        resultat.style.color = "#ef4444";
+      } else {
+        resultat.textContent = "Le double de " + nombre + " est : " + (nombre * 2);
+        resultat.style.color = "#4ade80";
+      }
+    });
+
+    // --- Quiz ---
+    var boutons_quiz = document.querySelectorAll(".options button");
+    for (var i = 0; i < boutons_quiz.length; i++) {
+      boutons_quiz[i].addEventListener("click", function() {
+        var btn        = this;
+        var idQuestion = btn.getAttribute("data-q");
+        var correct    = btn.getAttribute("data-ok");
+        var message    = btn.getAttribute("data-msg");
+
+        var questionDiv = document.getElementById(idQuestion);
+        if (questionDiv.querySelector(".bon") || questionDiv.querySelector(".faux")) {
+          return;
+        }
+
+        var btnsQuestion = questionDiv.querySelectorAll("button");
+        for (var j = 0; j < btnsQuestion.length; j++) {
+          btnsQuestion[j].disabled = true;
+        }
+
+        if (correct === "oui") {
+          btn.classList.add("bon");
+          score++;
+          document.getElementById("score-val").textContent = score;
+        } else {
+          btn.classList.add("faux");
+        }
+
+        var fb = document.getElementById("fb-" + idQuestion);
+        fb.innerHTML   = message;
+        fb.style.color = (correct === "oui") ? "#4ade80" : "#ef4444";
+      });
+    }
+
+  }); // fin DOMContentLoaded
 </script>
 
 </body>
